@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "push-docker": "docker buildx build --platform linux/arm64/v8,linux/amd64 -t redstarmy/geeek-server:latest --push .",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
