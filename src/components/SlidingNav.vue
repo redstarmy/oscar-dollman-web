@@ -1,19 +1,22 @@
 <template>
   <div>
     <nav>
-      <RouterLink to="/" @mouseleave="offset = active" @mouseover="offset = calcOffset('home')"
-                  v-on:click="active=0">Home
+
+
+      <RouterLink to="/" @mouseleave="resetOffset()" @mouseover="hoverOffset('home')"
+                  v-on:click="setActive('home')">Home
       </RouterLink>
-      <RouterLink to="/gallery" @mouseleave="offset = active" @mouseover="offset = calcOffset('gallery')"
-                  v-on:click="active=1">Gallery
+      <RouterLink to="/gallery" @mouseleave="resetOffset()" @mouseover="hoverOffset('gallery')"
+                  v-on:click="setActive('gallery')">Gallery
       </RouterLink>
-      <RouterLink to="/social" @mouseleave="offset = active" @mouseover="offset = calcOffset('social')"
-                  v-on:click="active=2">Social
+      <RouterLink to="/social" @mouseleave="resetOffset()" @mouseover="hoverOffset('social')"
+                  v-on:click="setActive('social')">Social
       </RouterLink>
     </nav>
-    <div class="tab_underline" v-if="curRoute.name"
-         v-bind:style="{marginLeft: 33.33 * offset + '%'}"></div>
+    <div v-if="curRoute.name" class="tab_underline"
+         v-bind:style=offset></div>
   </div>
+
 
 </template>
 
@@ -48,16 +51,19 @@ import router from "@/router";
 const routes = ["home", "gallery", "social"]
 const curRoute = useRoute()
 
-const active = ref(0)
-const offset = ref(0)
+const active = ref()
+
+const offset = ref()
+
 onMounted(async () => {
   await router.isReady()
-  active.value = calcOffset(curRoute.name)
-  offset.value= calcOffset(curRoute.name)
+  active.value = curRoute.name
+  offset.value = {marginLeft: 33.33 * routes.indexOf(active.value) + '%'}
 })
 
-const calcOffset = (tab) => routes.indexOf(tab)
-
+const resetOffset = () => offset.value = {marginLeft: 33.33 * routes.indexOf(active.value) + '%'}
+const hoverOffset = (tab) => offset.value = {marginLeft: 33.33 * routes.indexOf(tab) + '%'}
+const setActive = (tab) => active.value = tab
 
 
 </script>
