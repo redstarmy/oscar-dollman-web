@@ -1,23 +1,17 @@
 <template>
   <div>
     <nav>
-
-
-      <RouterLink to="/" @mouseleave="resetOffset()" @mouseover="hoverOffset('home')"
-                  v-on:click="setActive('home')">Home
-      </RouterLink>
-      <RouterLink to="/gallery" @mouseleave="resetOffset()" @mouseover="hoverOffset('gallery')"
-                  v-on:click="setActive('gallery')">Gallery
-      </RouterLink>
-      <RouterLink to="/social" @mouseleave="resetOffset()" @mouseover="hoverOffset('social')"
-                  v-on:click="setActive('social')">Social
+      <RouterLink
+        v-for="rot in router.getRoutes()"
+        :to="rot.path"
+        @mouseleave="resetOffset()"
+        @mouseover="hoverOffset(rot)"
+        v-on:click="setActive(rot)"
+        >{{ rot.meta.title }}
       </RouterLink>
     </nav>
-    <div v-if="curRoute.name" class="tab_underline"
-         v-bind:style=offset></div>
+    <div v-if="curRoute.name" class="tab_underline" v-bind:style="offset"></div>
   </div>
-
-
 </template>
 
 <style scoped>
@@ -38,32 +32,27 @@ nav a {
   height: 0.15em;
   width: 33.33%;
   background-color: black;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 </style>
 
 <script lang="ts" setup>
-import {RouterLink, useRoute} from "vue-router";
-import {onMounted, ref} from "vue";
-import router from "@/router";
+import { RouterLink, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import router from '@/router'
 
-const routes = ["home", "gallery", "social"]
 const curRoute = useRoute()
 
 const active = ref()
-
 const offset = ref()
 
 onMounted(async () => {
   await router.isReady()
-  active.value = curRoute.name
-  offset.value = {marginLeft: 33.33 * routes.indexOf(active.value) + '%'}
+  setActive(curRoute)
+  resetOffset()
 })
 
-const resetOffset = () => offset.value = {marginLeft: 33.33 * routes.indexOf(active.value) + '%'}
-const hoverOffset = (tab) => offset.value = {marginLeft: 33.33 * routes.indexOf(tab) + '%'}
-const setActive = (tab) => active.value = tab
-
-
+const resetOffset = () => (offset.value = { marginLeft: 33.33 * active.value.meta.offset + '%' })
+const hoverOffset = (tab) => (offset.value = { marginLeft: 33.33 * tab.meta.offset + '%' })
+const setActive = (tab) => (active.value = tab)
 </script>

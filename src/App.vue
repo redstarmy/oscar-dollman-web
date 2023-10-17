@@ -1,18 +1,15 @@
 <script lang="ts" setup>
-import {RouterView} from 'vue-router'
-import SlidingNav from "@/components/SlidingNav.vue";
+import { RouterView } from 'vue-router'
+import SlidingNav from '@/components/SlidingNav.vue'
 </script>
 
 <template>
   <header>
-
     <a>Oscar Dollman</a>
-    <SlidingNav>
-    </SlidingNav>
-
+    <SlidingNav> </SlidingNav>
   </header>
 
-  <RouterView/>
+  <RouterView />
 </template>
 
 <style scoped>
