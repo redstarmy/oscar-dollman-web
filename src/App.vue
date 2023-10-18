@@ -2,14 +2,18 @@
 import { RouterView } from 'vue-router'
 import SlidingNav from '@/components/SlidingNav.vue'
 import router from '@/router'
+import { UseWindowSize } from '@vueuse/components'
+import HamburgerNav from '@/components/HamburgerNav.vue'
 </script>
 
 <template>
-  <header>
-    <a v-on:click="router.push('/')">Oscar Dollman</a>
-    <SlidingNav> </SlidingNav>
-  </header>
-
+  <UseWindowSize v-slot="{ width, height }">
+    <header>
+      <a v-on:click="router.push('/')">Oscar Dollman</a>
+      <SlidingNav v-if="width >= 600" />
+      <HamburgerNav v-if="width < 600" />
+    </header>
+  </UseWindowSize>
   <RouterView />
 </template>
 
@@ -23,5 +27,8 @@ header {
   display: flex;
   justify-content: space-between;
   place-items: center;
+}
+
+@media (max-width: 1024px) {
 }
 </style>

@@ -9,7 +9,7 @@
         >{{ route.meta.title }}
       </RouterLink>
     </nav>
-    <div v-if="currentRoute.name" class="tab_underline" v-bind:style="tabOffset"></div>
+    <div v-if="currentRoute.name" class="tab_underline" v-bind:style="tabOffset" />
   </div>
 </template>
 
