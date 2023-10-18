@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router'
 import SlidingNav from '@/components/SlidingNav.vue'
+import router from '@/router'
 </script>
 
 <template>
   <header>
-    <a>Oscar Dollman</a>
+    <a v-on:click="router.push('/')">Oscar Dollman</a>
     <SlidingNav> </SlidingNav>
   </header>
 

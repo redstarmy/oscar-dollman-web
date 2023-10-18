@@ -2,15 +2,14 @@
   <div>
     <nav>
       <RouterLink
-        v-for="rot in router.getRoutes()"
-        :to="rot.path"
+        v-for="route in router.getRoutes()"
+        :to="route.path"
         @mouseleave="resetOffset()"
-        @mouseover="hoverOffset(rot)"
-        v-on:click="setActive(rot)"
-        >{{ rot.meta.title }}
+        @mouseover="hoverOffset(route)"
+        >{{ route.meta.title }}
       </RouterLink>
     </nav>
-    <div v-if="curRoute.name" class="tab_underline" v-bind:style="offset"></div>
+    <div v-if="currentRoute.name" class="tab_underline" v-bind:style="tabOffset"></div>
   </div>
 </template>
 
@@ -38,21 +37,16 @@ nav a {
 
 <script lang="ts" setup>
 import { RouterLink, useRoute } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import router from '@/router'
 
-const curRoute = useRoute()
+const currentRoute = useRoute()
+const tabOffset = ref()
 
-const active = ref()
-const offset = ref()
-
-onMounted(async () => {
-  await router.isReady()
-  setActive(curRoute)
+watch(currentRoute, () => {
   resetOffset()
 })
 
-const resetOffset = () => (offset.value = { marginLeft: 33.33 * active.value.meta.offset + '%' })
-const hoverOffset = (tab) => (offset.value = { marginLeft: 33.33 * tab.meta.offset + '%' })
-const setActive = (tab) => (active.value = tab)
+const resetOffset = () => (tabOffset.value = { marginLeft: 33.33 * currentRoute.meta.offset + '%' })
+const hoverOffset = (tab) => (tabOffset.value = { marginLeft: 33.33 * tab.meta.offset + '%' })
 </script>
