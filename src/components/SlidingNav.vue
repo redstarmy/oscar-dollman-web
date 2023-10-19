@@ -28,7 +28,7 @@ nav a {
 }
 
 .tab_underline {
-  height: 0.15em;
+  height: 2px;
   width: 33.33%;
   background-color: black;
   transition: 0.3s;
@@ -39,11 +39,12 @@ nav a {
 import { RouterLink, useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
 import router from '@/router'
+import { useWindowSize } from '@vueuse/core'
 
 const currentRoute = useRoute()
 const tabOffset = ref()
 
-watch(currentRoute, () => {
+watch([currentRoute, useWindowSize().width], () => {
   resetOffset()
 })
 

@@ -9,15 +9,19 @@ import HamburgerNav from '@/components/HamburgerNav.vue'
 <template>
   <UseWindowSize v-slot="{ width, height }">
     <header>
-      <a v-on:click="router.push('/')">Oscar Dollman</a>
+      <a class="title" v-on:click="router.push('/')">Oscar Dollman</a>
       <SlidingNav v-if="width >= 600" />
       <HamburgerNav v-if="width < 600" />
     </header>
   </UseWindowSize>
+
   <RouterView />
 </template>
 
 <style scoped>
+.title {
+  z-index: 3;
+}
 a {
   font-size: 28px;
 }
