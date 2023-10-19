@@ -49,5 +49,5 @@ watch([currentRoute, useWindowSize().width], () => {
 })
 
 const resetOffset = () => (tabOffset.value = { marginLeft: 33.33 * currentRoute.meta.offset + '%' })
-const hoverOffset = (tab) => (tabOffset.value = { marginLeft: 33.33 * tab.meta.offset + '%' })
+const hoverOffset = (tab: any) => (tabOffset.value = { marginLeft: 33.33 * tab.meta.offset + '%' })
 </script>
