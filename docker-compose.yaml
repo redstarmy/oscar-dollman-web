@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: geeek-server
+    build: .
+    ports:
+      - 8282:80
+    volumes:
+      - ./images/:/images
+
+volumes:
+  geeek-volume:
+    external: true
