@@ -3,7 +3,7 @@
     <a>This is a gallery page</a>
   </div>
 </template>
-<script>
+<script setup lang="ts">
 export default {
   data() {
     return {
