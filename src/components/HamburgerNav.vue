@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <div class="burger" :class="{ active: open }" v-on:click="open = !open" />
-    <div class="overlay" :class="{ active: open }">
-      <div class="overlay-content">
-        <RouterLink
-          v-for="route in router.getRoutes()"
-          :class="{ notUnderlined: activeRoute.name != route.name }"
-          :to="route.path"
-          v-on:click="open = !open"
-          >{{ route.meta.title }}
-        </RouterLink>
-      </div>
+  <div class="burger" :class="{ active: isOpen }" v-on:click="isOpen = !isOpen" />
+  <div class="overlay" :class="{ active: isOpen }">
+    <div class="overlay-content">
+      <RouterLink
+        v-for="route in router.getRoutes()"
+        :class="{ noUnderline: activeRoute.name != route.name }"
+        :to="route.path"
+        v-on:click="isOpen=false"
+        >{{ route.meta.title }}
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -46,6 +44,7 @@
 .active.overlay {
   height: 100%;
 }
+
 .burger {
   height: 20px;
   width: 30px;
@@ -60,7 +59,7 @@
   z-index: 2;
 }
 
-.notUnderlined {
+.noUnderline {
   text-decoration: none;
 }
 
@@ -92,10 +91,12 @@
 </style>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import router from '@/router'
 import { RouterLink, useRoute } from 'vue-router'
 
 const activeRoute = ref(useRoute())
-const open = ref(false)
+const isOpen = ref(false)
+
+watch(activeRoute.value, () => (isOpen.value = false))
 </script>
