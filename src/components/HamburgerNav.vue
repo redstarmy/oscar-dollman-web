@@ -3,10 +3,11 @@
   <div class="overlay" :class="{ active: isOpen }">
     <div class="overlay-content">
       <RouterLink
+        v-bind:key="route.name"
         v-for="route in router.getRoutes()"
         :class="{ noUnderline: activeRoute.name != route.name }"
         :to="route.path"
-        v-on:click="isOpen=false"
+        v-on:click="isOpen = false"
         >{{ route.meta.title }}
       </RouterLink>
     </div>

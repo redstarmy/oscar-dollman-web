@@ -7,14 +7,13 @@ import HamburgerNav from '@/components/HamburgerNav.vue'
 </script>
 
 <template>
-  <UseWindowSize v-slot="{ width, height }">
+  <UseWindowSize v-slot="{ width }">
     <header>
       <a class="title" v-on:click="router.push('/')">Oscar Dollman</a>
       <SlidingNav v-if="width >= 600" />
       <HamburgerNav v-if="width < 600" />
     </header>
   </UseWindowSize>
-
   <RouterView />
 </template>
 

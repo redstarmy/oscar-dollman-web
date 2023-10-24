@@ -1,6 +1,79 @@
 <template>
-  <div class="gallery">
-    <h1>This is a gallery.</h1>
+  <div v-for="country in countries" v-bind:key="country.title">
+    <a class="title">{{ country.title }}</a>
+    <div class="gallery-container">
+      <div v-for="image in country.images" :key="image" class="image-container">
+        <v-lazy-image :src="API_ENDPOINT + image" />
+      </div>
+    </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
+import type { country } from '../../api/api'
+import { API_ENDPOINT } from '../../api/api'
+import VLazyImage from 'v-lazy-image'
+
+const countries = ref([] as country[])
+
+const fetchCountries = async () => {
+  try {
+    const response = await fetch(API_ENDPOINT + 'get-dirs')
+    if (!response.ok) {
+      console.error('Network response was not ok')
+    }
+    return (await response.json()).countries
+  } catch (error) {
+    console.error('Error fetching image Directories:', error)
+  }
+}
+
+const fetchImages = async (country: string) => {
+  try {
+    const response = await fetch(API_ENDPOINT + country + '/get-images')
+    if (!response.ok) {
+      console.error('Network response was not ok')
+    }
+    return (await response.json()).images
+  } catch (error) {
+    console.error('Error fetching image URLs:', error)
+  }
+}
+
+const fetchAllImages = async () => {
+  fetchCountries().then((countryNames) =>
+    countryNames.forEach((countryName: string) =>
+      fetchImages(countryName).then((images) =>
+        countries.value.push({ title: countryName, images: images })
+      )
+    )
+  )
+}
+
+onMounted(fetchAllImages)
+</script>
+<style scoped>
+.image-container {
+  padding: 4px;
+}
+
+.gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.title {
+  font-size: 40px;
+  text-transform: capitalize;
+  justify-content: center;
+  display: flex;
+  padding: 25px;
+}
+
+img {
+  width: 100%;
+  max-width: 400px;
+}
+</style>

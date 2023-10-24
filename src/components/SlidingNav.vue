@@ -2,6 +2,7 @@
   <div>
     <nav>
       <RouterLink
+        v-bind:key="route.name"
         v-for="route in router.getRoutes()"
         :to="route.path"
         @mouseleave="resetOffset()"
