@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Push to Docker" type="js.build_tools.npm">
+  <configuration default="false" name="Docker push" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="push-docker" />
+      <script value="docker-push" />
     </scripts>
     <node-interpreter value="node" />
     <package-manager value="npm" />
