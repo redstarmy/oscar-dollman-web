@@ -3,9 +3,9 @@ services:
     container_name: geeek-server
     build: .
     ports:
-      - 8282:80
+      - 3000:3000
     volumes:
-      - ./images/:/images
+      - ./images/:/app/images
 
 volumes:
   geeek-volume:
