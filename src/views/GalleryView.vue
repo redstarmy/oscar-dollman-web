@@ -11,8 +11,8 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import type { country } from '../../api/api'
-import { API_ENDPOINT } from '../../api/api'
+import { API_ENDPOINT } from '@/api/api'
+import type { country } from '@/api/api'
 import VLazyImage from 'v-lazy-image'
 
 const countries = ref([] as country[])
@@ -54,16 +54,6 @@ const fetchAllImages = async () => {
 onMounted(fetchAllImages)
 </script>
 <style scoped>
-.image-container {
-  padding: 4px;
-}
-
-.gallery-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
-
 .title {
   font-size: 40px;
   text-transform: capitalize;
@@ -74,6 +64,36 @@ onMounted(fetchAllImages)
 
 img {
   width: 100%;
-  max-width: 400px;
+}
+
+@media only screen and (min-width: 600px) {
+  .gallery-container {
+    column-count: 1;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 768px) {
+  .gallery-container {
+    column-count: 2;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .gallery-container {
+    column-count: 3;
+  }
+}
+
+.gallery-container {
+  line-height: 0;
+  column-gap: 0;
+}
+
+.image-container {
+  display: inline-block;
+  width: 100%;
+  padding: 4px;
 }
 </style>
