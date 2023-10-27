@@ -31,7 +31,4 @@ header {
   justify-content: space-between;
   place-items: center;
 }
-
-@media (max-width: 1024px) {
-}
 </style>
