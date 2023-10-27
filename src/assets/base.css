@@ -7,11 +7,9 @@
 }
 
 body {
+  min-width: 300px;
   min-height: 100vh;
   background: white;
-  transition:
-    color 0.5s,
-    background-color 0.5s;
   line-height: 1.6;
   font-family: 'Times New Roman', serif;
   font-size: 15px;
