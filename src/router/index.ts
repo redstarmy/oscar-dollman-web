@@ -20,20 +20,20 @@ const router = createRouter({
     {
       path: '/gallery',
       name: 'gallery',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/GalleryView.vue'),
       meta: { offset: 1, title: 'Gallery' }
     },
     {
       path: '/social',
       name: 'social',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/SocialView.vue'),
       meta: { offset: 2, title: 'Social' }
+    },
+    {
+      path: '/album/:countryName',
+      name: 'album',
+      props: true,
+      component: () => import('../views/AlbumView.vue')
     }
   ]
 })

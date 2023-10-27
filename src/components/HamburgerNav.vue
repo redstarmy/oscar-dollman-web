@@ -4,7 +4,7 @@
     <div class="overlay-content">
       <RouterLink
         v-bind:key="route.name"
-        v-for="route in router.getRoutes()"
+        v-for="route in router.getRoutes().filter((routeItem) => routeItem.name != 'album')"
         :class="{ noUnderline: activeRoute.name != route.name }"
         :to="route.path"
         v-on:click="isOpen = false"
@@ -13,6 +13,17 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
+import router from '@/router'
+import { RouterLink, useRoute } from 'vue-router'
+
+const activeRoute = ref(useRoute())
+const isOpen = ref(false)
+
+watch(activeRoute.value, () => (isOpen.value = false))
+</script>
 
 <style scoped>
 .overlay-content {
@@ -90,14 +101,3 @@
   transform: translateY(0) rotate(45deg);
 }
 </style>
-
-<script lang="ts" setup>
-import { ref, watch } from 'vue'
-import router from '@/router'
-import { RouterLink, useRoute } from 'vue-router'
-
-const activeRoute = ref(useRoute())
-const isOpen = ref(false)
-
-watch(activeRoute.value, () => (isOpen.value = false))
-</script>

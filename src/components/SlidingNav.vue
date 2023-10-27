@@ -3,7 +3,7 @@
     <nav>
       <RouterLink
         v-bind:key="route.name"
-        v-for="route in router.getRoutes()"
+        v-for="route in router.getRoutes().filter((routeItem) => routeItem.name != 'album')"
         :to="route.path"
         @mouseleave="resetOffset()"
         @mouseover="hoverOffset(route)"
