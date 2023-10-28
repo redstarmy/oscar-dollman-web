@@ -26,4 +26,9 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-/images/
+
+/backend/package-lock.json
+/frontend/package-lock.json
+/backend/dist/
+/backend/images
+/backend/node_modules

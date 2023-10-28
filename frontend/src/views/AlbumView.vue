@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { API_ENDPOINT } from '@/api/api'
+import { API_ENDPOINT } from '../../../shared/api'
 import VLazyImage from 'v-lazy-image'
 import { onMounted, ref } from 'vue'
 

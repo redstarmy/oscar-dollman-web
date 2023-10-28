@@ -1,10 +1,10 @@
 <template>
-  <div class="burger" :class="{ active: isOpen }" v-on:click="isOpen = !isOpen" />
-  <div class="overlay" :class="{ active: isOpen }">
+  <div :class="{ active: isOpen }" class="burger" v-on:click="isOpen = !isOpen" />
+  <div :class="{ active: isOpen }" class="overlay">
     <div class="overlay-content">
       <RouterLink
-        v-bind:key="route.name"
         v-for="route in router.getRoutes().filter((routeItem) => routeItem.name != 'album')"
+        v-bind:key="route.name"
         :class="{ noUnderline: activeRoute.name != route.name }"
         :to="route.path"
         v-on:click="isOpen = false"
@@ -31,6 +31,7 @@ watch(activeRoute.value, () => (isOpen.value = false))
   top: 50%;
   transform: translateY(-50%);
 }
+
 .overlay-content a {
   font-size: 30px;
   padding: 10px;

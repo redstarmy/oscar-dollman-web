@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -20,13 +20,13 @@ const router = createRouter({
     {
       path: '/gallery',
       name: 'gallery',
-      component: () => import('../views/GalleryView.vue'),
+      component: () => import('@/views/GalleryView.vue'),
       meta: { offset: 1, title: 'Gallery' }
     },
     {
       path: '/social',
       name: 'social',
-      component: () => import('../views/SocialView.vue'),
+      component: () => import('@/views/SocialView.vue'),
       meta: { offset: 2, title: 'Social' }
     },
     {

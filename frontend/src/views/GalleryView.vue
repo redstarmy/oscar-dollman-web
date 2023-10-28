@@ -5,8 +5,8 @@
 <script lang="ts" setup>
 import ThumbnailView from '../components/ThumbnailView.vue'
 import { onMounted, ref } from 'vue'
-import { API_ENDPOINT } from '@/api/api'
-import type { country } from '@/api/api'
+import type { country } from '../../../shared/api'
+import { API_ENDPOINT } from '../../../shared/api'
 
 const gallery = ref([] as country[])
 
@@ -24,4 +24,3 @@ const fetchGallery = async () => {
 
 onMounted(fetchGallery)
 </script>
-<style scoped></style>

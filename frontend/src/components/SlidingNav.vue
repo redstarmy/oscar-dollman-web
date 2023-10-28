@@ -2,8 +2,8 @@
   <div>
     <nav>
       <RouterLink
-        v-bind:key="route.name"
         v-for="route in router.getRoutes().filter((routeItem) => routeItem.name != 'album')"
+        v-bind:key="route.name"
         :to="route.path"
         @mouseleave="resetOffset()"
         @mouseover="hoverOffset(route)"
@@ -39,8 +39,8 @@ nav a {
 <script lang="ts" setup>
 import { RouterLink, useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
-import router from '@/router'
 import { useWindowSize } from '@vueuse/core'
+import router from '@/router'
 
 const currentRoute = useRoute()
 const tabOffset = ref()

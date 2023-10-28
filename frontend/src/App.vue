@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router'
-import SlidingNav from '@/components/SlidingNav.vue'
 import router from '@/router'
 import { UseWindowSize } from '@vueuse/components'
 import HamburgerNav from '@/components/HamburgerNav.vue'
+import SlidingNav from '@/components/SlidingNav.vue'
 </script>
 
 <template>
@@ -21,6 +21,7 @@ import HamburgerNav from '@/components/HamburgerNav.vue'
 .title {
   z-index: 3;
 }
+
 a {
   font-size: 28px;
 }

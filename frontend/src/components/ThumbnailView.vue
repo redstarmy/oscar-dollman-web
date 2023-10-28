@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { API_ENDPOINT } from '@/api/api'
+import { API_ENDPOINT } from '../../../shared/api'
 import VLazyImage from 'v-lazy-image'
 
 defineProps(['gallery'])
@@ -30,6 +30,7 @@ defineProps(['gallery'])
 img {
   width: 100%;
 }
+
 .thumbnail-container {
   line-height: 0;
   column-gap: 0;

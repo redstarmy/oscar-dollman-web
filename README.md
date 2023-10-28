@@ -1,5 +1,3 @@
 # Geeek Server
 
 ## Setup
-
-

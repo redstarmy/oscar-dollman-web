@@ -1,15 +1,34 @@
-#!/bin/bash
-FROM node:lts-alpine AS builder
-LABEL authors="oscar"
+FROM node:alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY frontend/package.json frontend/package-lock.json ./frontend/
+COPY backend/package.json backend/package-lock.json ./backend/
+
+WORKDIR /app/frontend
+RUN npm install
+WORKDIR /app/backend
 RUN npm install
 
+WORKDIR /app
 COPY . .
 
-RUN npm run build-dev
+WORKDIR /app/frontend
+RUN npm run build:dev
+
+WORKDIR /app/backend
+RUN npm run build
+
+FROM node:alpine
+
+WORKDIR /app
+
+COPY --from=build /app/backend/dist /app/backend/dist
+COPY --from=build /app/backend/node_modules /app/backend/node_modules
+
+COPY --from=build /app/frontend/dist /app/backend/frontend/dist
+COPY --from=build /app/frontend/node_modules /app/backend/frontend/node_modules
 
 EXPOSE 3000
-CMD ["npm", "run", "start-backend"]
+
+CMD ["node", "backend/dist/backend/server.js"]
