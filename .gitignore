@@ -27,8 +27,5 @@ coverage
 *.sln
 *.sw?
 
-/backend/package-lock.json
-/frontend/package-lock.json
-/backend/dist/
-/backend/images
-/backend/node_modules
+package-lock.json
+images

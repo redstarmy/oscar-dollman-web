@@ -24,10 +24,10 @@ const router = createRouter({
       meta: { offset: 1, title: 'Gallery' }
     },
     {
-      path: '/social',
-      name: 'social',
-      component: () => import('@/views/SocialView.vue'),
-      meta: { offset: 2, title: 'Social' }
+      path: '/me',
+      name: 'me',
+      component: () => import('@/views/MeView.vue'),
+      meta: { offset: 2, title: 'Me' }
     },
     {
       path: '/album/:countryName',
