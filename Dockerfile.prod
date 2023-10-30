@@ -20,7 +20,7 @@ RUN npm run build
 WORKDIR /app/backend
 RUN npm run build
 
-FROM node:alpine
+FROM node:alpine AS deployment
 
 WORKDIR /app
 

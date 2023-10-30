@@ -7,11 +7,11 @@
     "start": "nodemon server.ts",
     "build": "tsc",
     "serve": "node dist/backend/server.js",
-    "docker-push": "docker buildx build -f ../Dockerfile.prod --platform linux/arm64/v8,linux/amd64 -t redstarmy/oscar-dollman-web:latest --no-cache --push ../",
+    "docker-push": "docker buildx build -f ../Dockerfile.prod --platform linux/arm64/v8,linux/amd64 -t redstarmy/oscar-dollman-web:latest --push ../",
     "docker-run:dev": "docker run -v $(pwd)/../images:/app/images -p 3000:3000 geeek-web-dev",
-    "docker-build:dev": "docker build --no-cache -t geeek-web-dev -f ../Dockerfile.dev --no-cache ../",
+    "docker-build:dev": "docker build --no-cache -t geeek-web-dev -f ../Dockerfile.dev ../",
     "docker-run:prod": "docker run -v $(pwd)/../images:/app/images -p 3000:3000 geeek-web-prod",
-    "docker-build:prod": "docker build -t geeek-web-prod -f ../Dockerfile.prod --no-cache ../"
+    "docker-build:prod": "docker build -t geeek-web-prod -f ../Dockerfile.prod ../"
   },
   "author": "",
   "devDependencies": {
@@ -23,8 +23,9 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "cors": "^2.8.5",
     "image-size": "^1.0.2"
+
   }
 }
