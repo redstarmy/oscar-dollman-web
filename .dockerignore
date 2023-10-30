@@ -6,4 +6,6 @@ images
 Dockerfile*
 docker-compose*
 README.md
+frontend/node_modules
+backend/node_modules
 .vscode
