@@ -1,5 +1,5 @@
 {
-  "name": "geeek_backend",
+  "name": "oscar-dollman-web-backend",
   "version": "1.0.0",
   "private": true,
   "main": "server.ts",
@@ -7,7 +7,7 @@
     "start": "nodemon server.ts",
     "build": "tsc",
     "serve": "node dist/backend/server.js",
-    "docker-push": "docker buildx build -f ../Dockerfile.prod --platform linux/arm64/v8,linux/amd64 -t redstarmy/geeek-server:latest --push ../",
+    "docker-push": "docker buildx build -f ../Dockerfile.prod --platform linux/arm64/v8,linux/amd64 -t redstarmy/oscar-dollman-web:latest --push ../",
     "docker-run:dev": "docker run -v $(pwd)/../images:/app/images -p 3000:3000 geeek-web-dev",
     "docker-build:dev": "docker build -t geeek-web-dev -f ../Dockerfile.dev ../",
     "docker-run:prod": "docker run -v $(pwd)/../images:/app/images -p 3000:3000 geeek-web-prod",
