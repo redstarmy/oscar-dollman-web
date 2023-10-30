@@ -2,8 +2,8 @@ FROM node:alpine AS build
 
 WORKDIR /app
 
-COPY frontend/package.json /app/frontend/package.json
-COPY backend/package.json /app/backend/package.json
+COPY frontend/package.json /app/frontend/
+COPY backend/package.json /app/backend/
 
 WORKDIR /app/frontend
 RUN npm install --production
