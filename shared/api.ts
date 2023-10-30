@@ -15,6 +15,8 @@ export enum validCountryNames {
 export type image = {
   index: number;
   url: string;
+  width: number;
+  height: number;
 };
 
 export type country = {

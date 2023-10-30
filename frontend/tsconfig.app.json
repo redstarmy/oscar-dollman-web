@@ -1,9 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../shared/api.ts"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../shared/*.ts"],
   "exclude": ["frontend/src/**/__tests__/*"],
   "compilerOptions": {
+    "target": "ESNext",
     "composite": true,
+    "strict": true,
+    "isolatedModules": true,
     "baseUrl": "",
     "paths": {
       "@/*": ["src/*"]

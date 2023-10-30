@@ -32,8 +32,9 @@ const router = createRouter({
     {
       path: '/album/:countryName',
       name: 'album',
-      props: true,
-      component: () => import('../views/AlbumView.vue')
+      component: () => import('@/views/AlbumView.vue'),
+      meta: { offset: 1, title: 'Album' },
+      props: true
     }
   ]
 })

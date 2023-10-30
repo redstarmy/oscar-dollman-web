@@ -32,8 +32,9 @@ img {
 }
 
 .thumbnail-container {
+  display: grid;
+  grid-template-columns: auto;
   line-height: 0;
-  column-gap: 0;
 }
 
 .thumbnail-content {
@@ -47,13 +48,13 @@ img {
 
 @media only screen and (min-width: 768px) {
   .thumbnail-container {
-    columns: 2;
+    grid-template-columns: 50% 50%;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .thumbnail-container {
-    columns: 3;
+    grid-template-columns: 33.33% 33.33% 33.33%;
   }
 }
 </style>

@@ -12,7 +12,7 @@ const gallery = ref([] as country[])
 
 const fetchGallery = async () => {
   try {
-    const response = await fetch(API_ENDPOINT + 'get-img')
+    const response = await fetch(API_ENDPOINT + 'get-gallery')
     if (!response.ok) {
       console.error('Network response was not ok')
     }
