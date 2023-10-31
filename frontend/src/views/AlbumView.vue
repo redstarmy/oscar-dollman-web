@@ -1,13 +1,13 @@
 <template>
   <div v-if="album">
-    <div class="title" >
+    <div class="title">
       <div class="back" v-on:click="router.go(-1)">&lt;</div>
       <a>{{ album.title }}</a>
-      <div/>
-  </div>
+      <div />
+    </div>
     <div class="gallery-container">
       <div v-for="image in album.images" :key="image.index" class="image-container">
-        <v-lazy-image :src="API_ENDPOINT + image.url" />
+        <lazzy-placeholder-image :srcImage="image" />
       </div>
     </div>
   </div>
@@ -15,9 +15,9 @@
 
 <script lang="ts" setup>
 import { API_ENDPOINT } from '../../../shared/api'
-import VLazyImage from 'v-lazy-image'
 import { onMounted, ref } from 'vue'
-import router from "@/router";
+import router from '@/router'
+import LazzyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 
 const props = defineProps(['countryName'])
 defineEmits([''])
@@ -38,9 +38,8 @@ const fetchAlbum = async () => {
 onMounted(fetchAlbum)
 </script>
 <style scoped>
-.back{
+.back {
   cursor: pointer;
-
 }
 .title {
   font-size: 40px;
@@ -48,10 +47,6 @@ onMounted(fetchAlbum)
   justify-content: space-between;
   display: flex;
   padding: 25px 10px;
-}
-
-img {
-  width: 100%;
 }
 
 @media only screen and (min-width: 600px) {

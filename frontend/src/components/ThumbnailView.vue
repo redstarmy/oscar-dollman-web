@@ -4,7 +4,7 @@
       <RouterLink :to="'album/' + country.name">
         <div class="thumbnail-frame">
           <a class="title">{{ country.title }}</a>
-          <v-lazy-image :src="API_ENDPOINT + country.thumbnail.url" />
+          <lazy-placeholder-image :srcImage="country.thumbnail" />
         </div>
       </RouterLink>
     </div>
@@ -12,8 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { API_ENDPOINT } from '../../../shared/api'
-import VLazyImage from 'v-lazy-image'
+import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 
 defineProps(['gallery'])
 </script>
@@ -27,34 +26,30 @@ defineProps(['gallery'])
   color: black;
 }
 
-img {
-  width: 100%;
-}
-
 .thumbnail-container {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr;
   line-height: 0;
 }
 
 .thumbnail-content {
-  width: 100%;
   padding: 20px 10px;
 }
 
 .thumbnail-frame {
+  width: 100%;
   display: inline-block;
 }
 
 @media only screen and (min-width: 768px) {
   .thumbnail-container {
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .thumbnail-container {
-    grid-template-columns: 33.33% 33.33% 33.33%;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 </style>
