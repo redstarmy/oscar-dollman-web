@@ -17,7 +17,6 @@
 <script lang="ts" setup>
 import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
-
 import type { UseIntersectionObserverOptions } from '@vueuse/core'
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
@@ -25,6 +24,8 @@ import { ref } from 'vue'
 const props = defineProps(['srcImage'])
 const imageLoaded = ref(false)
 const lazyImage = ref()
+
+window.onload = () => lazyImage.value.src = API_ENDPOINT + props.srcImage.url
 
 const vLazy = {
   mounted: (figure: HTMLElement) => {
@@ -38,14 +39,15 @@ const vLazy = {
     }
     useIntersectionObserver(figure, handleIntersect, {
       root: null,
-      threshold: '0'
+      threshold: '0',
+      rootMargin: "20%"
     } as unknown as UseIntersectionObserverOptions)
   }
 }
 const getPlaceholderAspectRatio = (image: image) =>
   image.width && image.height ? image.width / image.height : 1
 
-const onImageLoad = () => (imageLoaded.value = true)
+const onImageLoad = () => imageLoaded.value = true
 </script>
 
 <style scoped>

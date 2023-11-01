@@ -7,7 +7,7 @@
     </div>
     <div class="gallery-container">
       <div v-for="image in album.images" :key="image.index" class="image-container">
-        <lazzy-placeholder-image :srcImage="image" />
+        <lazy-placeholder-image :srcImage="image" />
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
 import { API_ENDPOINT } from '../../../shared/api'
 import { onMounted, ref } from 'vue'
 import router from '@/router'
-import LazzyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
+import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 
 const props = defineProps(['countryName'])
 defineEmits([''])
