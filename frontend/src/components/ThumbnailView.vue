@@ -1,7 +1,7 @@
 <template>
   <div class="thumbnail-container">
     <div v-for="country in gallery" v-bind:key="country.name" class="thumbnail-content">
-      <RouterLink :to="'album/' + country.name">
+      <RouterLink :to="'gallery/' + country.name">
         <div class="thumbnail-frame">
           <a class="title">{{ country.title }}</a>
           <lazy-placeholder-image :srcImage="country.thumbnail" />

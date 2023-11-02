@@ -12,7 +12,7 @@ export enum validCountryNames {
   "Berlin",
   "UK",
   "Black & White",
-  "Holland"
+  "Holland",
 }
 
 export type image = {

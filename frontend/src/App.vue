@@ -8,7 +8,7 @@ import SlidingNav from '@/components/SlidingNav.vue'
 
 <template>
   <UseWindowSize v-slot="{ width }">
-    <header>
+    <header style="max-height: 15vh">
       <a class="title" v-on:click="router.push('/')">Oscar Dollman</a>
       <SlidingNav v-if="width >= 600" />
       <HamburgerNav v-if="width < 600" />

@@ -1,27 +1,60 @@
 <template>
   <div v-if="album">
-    <div class="title">
-      <div class="back" v-on:click="router.go(-1)">&lt;</div>
+    <div class="album-title">
+      <div class="back" v-on:click="handleBack">&lt;</div>
       <a>{{ album.title }}</a>
-      <div />
+      <div style="opacity: 0; cursor: default">&lt;</div>
     </div>
-    <div class="gallery-container">
-      <div v-for="image in album.images" :key="image.index" class="image-container">
+    <div v-if="detailIndex == -1" class="masonry-container">
+      <div
+        v-for="image in album.images"
+        :key="image.index"
+        class="masonry-image-container"
+        v-on:click="openDetail(image.index)"
+      >
         <lazy-placeholder-image :srcImage="image" />
       </div>
+    </div>
+    <div v-else class="detail-container">
+      <div class="overlay overlay-left" v-on:click="handleDetailBackward"></div>
+      <div class="overlay overlay-right" v-on:click="handleDetailForward"></div>
+      <lazy-placeholder-image :srcImage="detailSrc" optStyle="max-height: 80vh" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
+import { useWindowSize } from '@vueuse/core'
 
 const props = defineProps(['countryName'])
-defineEmits([''])
 const album = ref()
+const detailIndex = ref(-1)
+const detailMaxIndex = ref()
+const detailSrc = computed(() =>
+  (album.value.images as image[]).find((image) => image.index == detailIndex.value)
+)
+
+const openDetail = (imgIndex: number) => {
+  if (useWindowSize().width.value > 768) {
+    detailIndex.value = imgIndex
+  }
+}
+
+const handleBack = () => {
+  detailIndex.value == -1 ? router.go(-1) : (detailIndex.value = -1)
+}
+
+const handleDetailForward = () => {
+  detailIndex.value = Math.min(detailIndex.value + 1, detailMaxIndex.value)
+}
+const handleDetailBackward = () => {
+  detailIndex.value = Math.max(detailIndex.value - 1, 0)
+}
 
 const fetchAlbum = async () => {
   try {
@@ -30,6 +63,7 @@ const fetchAlbum = async () => {
       console.error('Network response was not ok')
     }
     album.value = await response.json()
+    detailMaxIndex.value = album.value.images.length - 1
   } catch (error) {
     console.error('Error fetching image URLs:', error)
   }
@@ -38,43 +72,65 @@ const fetchAlbum = async () => {
 onMounted(fetchAlbum)
 </script>
 <style scoped>
+.overlay {
+  width: 40%;
+  position: absolute;
+  max-height: 80vh;
+  height: 100%;
+}
+.overlay-left {
+  cursor: w-resize;
+  left: 0;
+}
+.overlay-right {
+  cursor: e-resize;
+  right: 0;
+}
+.detail-container {
+  max-height: 70vh;
+  display: flex;
+  justify-content: center;
+}
+
 .back {
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
-.title {
+.album-title {
   font-size: 40px;
-  text-transform: capitalize;
   justify-content: space-between;
   display: flex;
-  padding: 25px 10px;
+  max-height: 10vh;
+  padding: 10px;
 }
 
 @media only screen and (min-width: 600px) {
-  .gallery-container {
+  .masonry-container {
     column-count: 1;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 768px) {
-  .gallery-container {
+  .masonry-container {
     column-count: 2;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-  .gallery-container {
+  .masonry-container {
     column-count: 3;
   }
 }
 
-.gallery-container {
+.masonry-container {
   line-height: 0;
   column-gap: 0;
 }
 
-.image-container {
+.masonry-image-container {
   display: inline-block;
   width: 100%;
   padding: 4px;

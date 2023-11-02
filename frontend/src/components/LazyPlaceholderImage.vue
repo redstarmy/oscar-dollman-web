@@ -1,6 +1,7 @@
 <template>
   <figure v-lazy>
     <img
+      :style="optStyle"
       ref="lazyImage"
       :alt="'image_' + srcImage.index"
       :onload="onImageLoad"
@@ -19,13 +20,23 @@ import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import type { UseIntersectionObserverOptions } from '@vueuse/core'
 import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-const props = defineProps(['srcImage'])
+const props = defineProps(['srcImage', 'optStyle'])
 const imageLoaded = ref(false)
 const lazyImage = ref()
 
-window.onload = () => lazyImage.value.src = API_ENDPOINT + props.srcImage.url
+watch(props.srcImage, () => {
+  console.log(props.srcImage.url)
+  lazyImage.value.src = API_ENDPOINT + props.srcImage.url
+})
+
+watch(
+  () => props.srcImage,
+  () => {
+    lazyImage.value.src = API_ENDPOINT + props.srcImage.url
+  }
+)
 
 const vLazy = {
   mounted: (figure: HTMLElement) => {
@@ -40,14 +51,14 @@ const vLazy = {
     useIntersectionObserver(figure, handleIntersect, {
       root: null,
       threshold: '0',
-      rootMargin: "20%"
+      rootMargin: '20%'
     } as unknown as UseIntersectionObserverOptions)
   }
 }
 const getPlaceholderAspectRatio = (image: image) =>
   image.width && image.height ? image.width / image.height : 1
 
-const onImageLoad = () => imageLoaded.value = true
+const onImageLoad = () => (imageLoaded.value = true)
 </script>
 
 <style scoped>
@@ -77,5 +88,9 @@ img {
   100% {
     background-color: #f1f1f1; /* Back to grey color */
   }
+}
+
+.test img {
+  max-height: 80vh;
 }
 </style>
