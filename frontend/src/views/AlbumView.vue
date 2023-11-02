@@ -18,7 +18,7 @@
     <div v-else class="detail-container">
       <div class="overlay overlay-left" v-on:click="handleDetailBackward"></div>
       <div class="overlay overlay-right" v-on:click="handleDetailForward"></div>
-      <lazy-placeholder-image :srcImage="detailSrc" optStyle="max-height: 80vh" />
+      <lazy-placeholder-image :srcImage="detailSrc" optStyle="max-height: 80vh; max-width: 100%; width: auto" />
     </div>
   </div>
 </template>
