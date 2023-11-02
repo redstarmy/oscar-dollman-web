@@ -98,11 +98,10 @@ onMounted(fetchAlbum)
   align-items: center;
 }
 .album-title {
-  font-size: 40px;
+  font-size: 30px;
   justify-content: space-between;
   display: flex;
-  max-height: 10vh;
-  padding: 10px;
+  padding: 5px;
 }
 
 @media only screen and (min-width: 600px) {
