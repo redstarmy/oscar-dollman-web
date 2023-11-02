@@ -1,6 +1,6 @@
 # Developing oscardollman.com
 
-![Website](https://img.shields.io/website?url=https%3A%2F%2Foscardollman.com&label=Website)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Foscardollman.com&label=Website)(https://oscardollman.com)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/repository/docker/redstarmy/oscar-dollman-web)
 
 Welcome to the repository for my personal website, [oscardollman.com](https://oscardollman.com)! This repository serves as a development hub for my personal website, functioning as both a gallery to showcase my photography work and a platform to introduce myself to the world.
