@@ -19,6 +19,7 @@ import SlidingNav from '@/components/SlidingNav.vue'
 
 <style scoped>
 .title {
+  cursor: pointer;
   z-index: 3;
 }
 
