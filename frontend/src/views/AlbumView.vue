@@ -5,20 +5,28 @@
       <a>{{ album.title }}</a>
       <div style="opacity: 0; cursor: default">&lt;</div>
     </div>
+
     <div v-if="detailIndex == -1" class="masonry-container">
       <div
         v-for="image in album.images"
         :key="image.index"
         class="masonry-image-container"
-        v-on:click="openDetail(image.index)"
+        v-on:click="openDetail(image)"
+        :id="image.index"
       >
-        <lazy-placeholder-image :srcImage="image" />
+        <lazy-placeholder-image :srcImage="image" :ref="image.index" />
       </div>
     </div>
+
     <div v-else class="detail-container">
       <div class="overlay overlay-left" v-on:click="handleDetailBackward"></div>
       <div class="overlay overlay-right" v-on:click="handleDetailForward"></div>
-      <lazy-placeholder-image :srcImage="detailSrc" optStyle="max-height: 80vh; max-width: 100%; width: auto" />
+      <div class="detailNav-left">&lt;</div>
+      <lazy-placeholder-image
+        :srcImage="detailSrc"
+        optStyle="max-height: 80vh; max-width: 100%; width: auto"
+      />
+      <div class="detailNav-right">&gt;</div>
     </div>
   </div>
 </template>
@@ -26,7 +34,7 @@
 <script lang="ts" setup>
 import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import router from '@/router'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 import { useWindowSize } from '@vueuse/core'
@@ -39,19 +47,26 @@ const detailSrc = computed(() =>
   (album.value.images as image[]).find((image) => image.index == detailIndex.value)
 )
 
-const openDetail = (imgIndex: number) => {
+const openDetail = (detailImg: image) => {
   if (useWindowSize().width.value > 768) {
-    detailIndex.value = imgIndex
+    detailIndex.value = detailImg.index
   }
 }
 
 const handleBack = () => {
-  detailIndex.value == -1 ? router.go(-1) : (detailIndex.value = -1)
+  if (detailIndex.value == -1) {
+    router.go(-1)
+  } else {
+    const scrollToElement = detailIndex.value.toString()
+    detailIndex.value = -1
+    nextTick(() => document.getElementById(scrollToElement)?.scrollIntoView())
+  }
 }
 
 const handleDetailForward = () => {
   detailIndex.value = Math.min(detailIndex.value + 1, detailMaxIndex.value)
 }
+
 const handleDetailBackward = () => {
   detailIndex.value = Math.max(detailIndex.value - 1, 0)
 }
@@ -86,8 +101,17 @@ onMounted(fetchAlbum)
   cursor: e-resize;
   right: 0;
 }
+
+.detailNav-left {
+  padding-right: 20px;
+}
+.detailNav-right {
+  padding-left: 20px;
+}
 .detail-container {
-  max-height: 70vh;
+  font-size: 30px;
+  max-height: 80vh;
+  align-items: center;
   display: flex;
   justify-content: center;
 }
@@ -133,5 +157,10 @@ onMounted(fetchAlbum)
   display: inline-block;
   width: 100%;
   padding: 4px;
+}
+@media only screen and (min-width: 768px) {
+  .masonry-image-container {
+    cursor: pointer;
+  }
 }
 </style>
