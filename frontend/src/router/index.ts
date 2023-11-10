@@ -13,9 +13,9 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'overview',
       component: HomeView,
-      meta: { offset: 0, title: 'Home' }
+      meta: { offset: 0, title: 'Overview' }
     },
     {
       path: '/gallery',

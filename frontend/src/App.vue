@@ -11,7 +11,7 @@ import SlidingNav from '@/components/SlidingNav.vue'
     <header>
       <a class="title" v-on:click="router.push('/')">Oscar Dollman</a>
       <SlidingNav v-if="width >= 600" />
-      <HamburgerNav v-if="width < 600" />
+      <HamburgerNav v-else />
     </header>
   </UseWindowSize>
   <RouterView />
@@ -21,6 +21,7 @@ import SlidingNav from '@/components/SlidingNav.vue'
 .title {
   cursor: pointer;
   z-index: 3;
+  font-size: 35px;
 }
 
 a {
@@ -33,9 +34,9 @@ header {
   justify-content: space-between;
   place-items: center;
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 600px) {
   header {
-    padding-top: 1rem;
+    padding-top: 2rem;
   }
 }
 </style>
