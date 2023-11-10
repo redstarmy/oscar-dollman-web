@@ -13,8 +13,15 @@
 
 <script lang="ts" setup>
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
+import type { PropType } from 'vue'
+import type { country } from '../../../shared/api'
 
-defineProps(['gallery'])
+defineProps({
+  gallery: {
+    type: Array as PropType<country[]>,
+    required: true
+  }
+})
 </script>
 <style scoped>
 .title {
@@ -30,6 +37,7 @@ defineProps(['gallery'])
   display: grid;
   grid-template-columns: 1fr;
   line-height: 0;
+  padding-top: 15px;
 }
 
 .thumbnail-content {

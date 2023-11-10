@@ -32,14 +32,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { image } from '../../../shared/api'
+import type { image, validCountryNames } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import { computed, nextTick, onMounted, ref } from 'vue'
+import type { PropType } from 'vue'
 import router from '@/router'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 import { useWindowSize } from '@vueuse/core'
 
-const props = defineProps(['countryName'])
+const props = defineProps({
+  countryName: Object as PropType<validCountryNames>
+})
 const album = ref()
 const detailIndex = ref(-1)
 const detailMaxIndex = ref()

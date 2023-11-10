@@ -22,8 +22,8 @@ nav {
 
 nav a {
   text-align: center;
-  font-size: 18px;
-  min-width: 80px;
+  font-size: 20px;
+  min-width: 90px;
   text-decoration: none;
   color: inherit;
 }

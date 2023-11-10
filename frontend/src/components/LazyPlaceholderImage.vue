@@ -19,10 +19,17 @@
 import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import type { UseIntersectionObserverOptions } from '@vueuse/core'
-import { useIntersectionObserver } from '@vueuse/core'
+import { useIntersectionObserver, useWindowSize } from '@vueuse/core'
 import { ref, watch } from 'vue'
+import type { PropType } from 'vue'
 
-const props = defineProps(['srcImage', 'optStyle'])
+const props = defineProps({
+  srcImage: {
+    type: Object as PropType<image>,
+    required: true
+  },
+  optStyle: String
+})
 const imageLoaded = ref(false)
 const lazyImage = ref()
 
@@ -51,10 +58,11 @@ const vLazy = {
     useIntersectionObserver(figure, handleIntersect, {
       root: null,
       threshold: '0',
-      rootMargin: '20%'
+      rootMargin: useWindowSize().width.value > 768 ? '30%' : '50%'
     } as unknown as UseIntersectionObserverOptions)
   }
 }
+
 const getPlaceholderAspectRatio = (image: image) =>
   image.width && image.height ? image.width / image.height : 1
 
