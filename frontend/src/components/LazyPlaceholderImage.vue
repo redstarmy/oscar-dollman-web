@@ -11,7 +11,7 @@
       v-if="!imageLoaded"
       class="flashing-placeholder"
       :style="{ aspectRatio: getPlaceholderAspectRatio(srcImage) }"
-    ></div>
+    />
   </figure>
 </template>
 
@@ -20,7 +20,7 @@ import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import type { UseIntersectionObserverOptions } from '@vueuse/core'
 import { useIntersectionObserver, useWindowSize } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import {ref, watch } from 'vue'
 import type { PropType } from 'vue'
 
 const props = defineProps({
@@ -28,29 +28,56 @@ const props = defineProps({
     type: Object as PropType<image>,
     required: true
   },
+  windowWidth: Number,
   optStyle: String
 })
 const imageLoaded = ref(false)
 const lazyImage = ref()
 
-watch(props.srcImage, () => {
-  console.log(props.srcImage.url)
-  lazyImage.value.src = API_ENDPOINT + props.srcImage.url
-})
-
 watch(
   () => props.srcImage,
   () => {
-    lazyImage.value.src = API_ENDPOINT + props.srcImage.url
+    imageLoaded.value = false
+    console.log('yee')
+    lazyImage.value.src = getSrcImg(props.srcImage)
   }
 )
+
+const setSize = (windowWidth: number) => {
+  if (windowWidth == -1) {
+    return 'large'
+  } else if (windowWidth < 500) {
+    return 'small'
+  } else if (windowWidth < 768) {
+    return 'medium'
+  } else if (windowWidth < 900) {
+    return 'small'
+  } else if (windowWidth < 1200) {
+    return 'medium'
+  } else if (windowWidth < 1500) {
+    return 'small'
+  } else {
+    return 'medium'
+  }
+}
+
+const getSrcImg = (img: image) => {
+  switch (setSize(props.windowWidth ?? 900)) {
+    case 'small':
+      return API_ENDPOINT + img.smallUrl
+    case 'medium':
+      return API_ENDPOINT + img.mediumUrl
+    default:
+      return API_ENDPOINT + img.url
+  }
+}
 
 const vLazy = {
   mounted: (figure: HTMLElement) => {
     function handleIntersect(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          lazyImage.value.src = API_ENDPOINT + props.srcImage.url
+          lazyImage.value.src = getSrcImg(props.srcImage)
           observer.unobserve(figure)
         }
       })
@@ -96,9 +123,5 @@ img {
   100% {
     background-color: #f1f1f1; /* Back to grey color */
   }
-}
-
-.test img {
-  max-height: 80vh;
 }
 </style>
