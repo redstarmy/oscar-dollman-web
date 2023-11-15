@@ -14,34 +14,45 @@
         v-on:click="openDetail(image)"
         :id="image.index"
       >
-        <lazy-placeholder-image :srcImage="image" :ref="image.index" />
+        <UseWindowSize v-slot="{ width }">
+          <lazy-placeholder-image :windowWidth="width" :srcImage="image" :ref="image.index" />
+        </UseWindowSize>
       </div>
     </div>
 
     <div v-else class="detail-container">
-      <div class="overlay overlay-left" v-on:click="handleDetailBackward"></div>
+      <div
+        class="overlay overlay-left"
+        :style="'max-height:' + detailSrc.height"
+        v-on:click="handleDetailBackward"
+      ></div>
       <div class="overlay overlay-right" v-on:click="handleDetailForward"></div>
       <div class="detailNav-left">&lt;</div>
-      <lazy-placeholder-image
-        :srcImage="detailSrc"
-        optStyle="max-height: 80vh; max-width: 100%; width: auto"
-      />
+      <UseWindowSize v-slot="{ width }">
+        <lazy-placeholder-image
+          size="large"
+          :windowWidth="detailIndex == -1 ? width : -1"
+          :srcImage="detailSrc"
+          optStyle="max-height: 80vh; max-width: 100%; width: auto"
+        />
+      </UseWindowSize>
+
       <div class="detailNav-right">&gt;</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { image, validCountryNames } from '../../../shared/api'
+import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import { computed, nextTick, onMounted, ref } from 'vue'
-import type { PropType } from 'vue'
 import router from '@/router'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 import { useWindowSize } from '@vueuse/core'
+import { UseWindowSize } from '@vueuse/components'
 
 const props = defineProps({
-  countryName: Object as PropType<validCountryNames>
+  countryName: String
 })
 const album = ref()
 const detailIndex = ref(-1)
@@ -49,6 +60,21 @@ const detailMaxIndex = ref()
 const detailSrc = computed(() =>
   (album.value.images as image[]).find((image) => image.index == detailIndex.value)
 )
+
+const fetchAlbum = async () => {
+  try {
+    const response = await fetch(API_ENDPOINT + 'get-album/' + props.countryName)
+    if (!response.ok) {
+      console.error('Network response was not ok')
+    }
+    album.value = await response.json()
+    detailMaxIndex.value = album.value.images.length - 1
+  } catch (error) {
+    console.error('Error fetching image URLs:', error)
+  }
+}
+
+onMounted(fetchAlbum)
 
 const openDetail = (detailImg: image) => {
   if (useWindowSize().width.value > 768) {
@@ -73,27 +99,11 @@ const handleDetailForward = () => {
 const handleDetailBackward = () => {
   detailIndex.value = Math.max(detailIndex.value - 1, 0)
 }
-
-const fetchAlbum = async () => {
-  try {
-    const response = await fetch(API_ENDPOINT + 'get-album/' + props.countryName)
-    if (!response.ok) {
-      console.error('Network response was not ok')
-    }
-    album.value = await response.json()
-    detailMaxIndex.value = album.value.images.length - 1
-  } catch (error) {
-    console.error('Error fetching image URLs:', error)
-  }
-}
-
-onMounted(fetchAlbum)
 </script>
 <style scoped>
 .overlay {
   width: 40%;
   position: absolute;
-  max-height: 80vh;
   height: 100%;
 }
 .overlay-left {
@@ -113,10 +123,10 @@ onMounted(fetchAlbum)
 }
 .detail-container {
   font-size: 30px;
-  max-height: 80vh;
   align-items: center;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 .back {
