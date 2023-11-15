@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["server.ts", "../shared/**/*"],
+  "include": ["support.ts", "server.ts", "../shared/**/*"],
   "exclude": ["node_modules"]
 }

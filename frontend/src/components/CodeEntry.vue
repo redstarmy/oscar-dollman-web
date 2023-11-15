@@ -25,6 +25,7 @@ defineProps({
   break-inside: avoid;
 }
 .badge {
+  cursor: pointer;
   display: flex;
   align-items: center;
   padding-left: 8px;

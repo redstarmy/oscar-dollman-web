@@ -60,7 +60,8 @@
           >
           (LEA). It is a
           <a class="link" target="_blank" href="https://www.selenium.dev/">Selenium</a> bot which
-          scrapes the LEA appointment webpage.
+          scrapes the LEA appointment webpage and notifies the user once new appointments have been
+          released.
         </p>
         <br />
         <p class="text">
