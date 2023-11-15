@@ -3,7 +3,7 @@ export const API_ENDPOINT =
     ? "https://oscardollman.com/api/"
     : "http://localhost:3000/api/";
 
-export const imgRegex = /\.(jpeg|jpg|png)$/i;
+export const imgRegex = /^(?!small-|medium-).*\.(jpeg|jpg|png)$/i;
 
 export enum validCountryNames {
   "India",
@@ -11,7 +11,7 @@ export enum validCountryNames {
   "Paris",
   "Berlin",
   "UK",
-  "Black & White",
+  "Black_&_White",
   "Holland",
 }
 
@@ -20,6 +20,8 @@ export type image = {
   url: string;
   width: number;
   height: number;
+  smallUrl?: string;
+  mediumUrl?: string;
 };
 
 export type country = {
