@@ -13,9 +13,9 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'overview',
       component: HomeView,
-      meta: { offset: 0, title: 'Home' }
+      meta: { offset: 0, title: 'Overview' }
     },
     {
       path: '/gallery',
@@ -30,7 +30,7 @@ const router = createRouter({
       meta: { offset: 2, title: 'Me' }
     },
     {
-      path: '/album/:countryName',
+      path: '/gallery/:countryName',
       name: 'album',
       component: () => import('@/views/AlbumView.vue'),
       meta: { offset: 1, title: 'Album' },
