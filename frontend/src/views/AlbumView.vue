@@ -23,7 +23,7 @@
     <div v-else class="detail-container">
       <div
         class="overlay overlay-left"
-        :style="'max-height:' + detailSrc.height"
+        :style="'max-height:' + detailSrc?.height"
         v-on:click="handleDetailBackward"
       ></div>
       <div class="overlay overlay-right" v-on:click="handleDetailForward"></div>

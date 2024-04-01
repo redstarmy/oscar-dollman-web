@@ -38,7 +38,6 @@ watch(
   () => props.srcImage,
   () => {
     imageLoaded.value = false
-    console.log('yee')
     lazyImage.value.src = getSrcImg(props.srcImage)
   }
 )
