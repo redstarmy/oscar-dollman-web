@@ -1,28 +1,45 @@
 <template>
-  <div :class="{ active: isOpen }" class="burger" v-on:click="isOpen = !isOpen" />
-  <div :class="{ active: isOpen }" class="overlay">
+  <div :class="['burger', { active: isOpen }]" @click="toggleMenu"></div>
+  <div :class="['overlay', { active: isOpen }]">
     <div class="overlay-content">
       <RouterLink
-        v-for="route in router.getRoutes().filter((routeItem) => routeItem.name != 'album')"
-        v-bind:key="route.name"
-        :class="{ noUnderline: activeRoute.name != route.name }"
+        v-for="route in filteredRoutes"
+        :key="route.name"
+        :class="{ noUnderline: activeRoute.name !== route.name }"
         :to="route.path"
-        v-on:click="isOpen = false"
-        >{{ route.meta.title }}
+        @click="closeMenu"
+      >
+        {{ route.meta.title }}
       </RouterLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import router from '@/router'
-import { RouterLink, useRoute } from 'vue-router'
+import { ref, computed, watch } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 
-const activeRoute = ref(useRoute())
-const isOpen = ref(false)
+const isOpen = ref(false);
+const activeRoute = useRoute();
+const router = useRouter();
 
-watch(activeRoute.value, () => (isOpen.value = false))
+// Toggle the menu open or closed
+const toggleMenu = () => {
+  isOpen.value = !isOpen.value;
+};
+
+// Close the menu
+const closeMenu = () => {
+  isOpen.value = false;
+};
+
+// Watch for changes in the active route to close the menu
+watch(() => activeRoute.name, closeMenu);
+
+// Filter out the 'album' route
+const filteredRoutes = computed(() =>
+  router.getRoutes().filter((route) => route.name !== 'album')
+);
 </script>
 
 <style scoped>
@@ -54,7 +71,7 @@ watch(activeRoute.value, () => (isOpen.value = false))
   transition: 0.4s;
 }
 
-.active.overlay {
+.overlay.active {
   height: 100%;
 }
 
@@ -94,11 +111,11 @@ watch(activeRoute.value, () => (isOpen.value = false))
   transform: translateY(4px);
 }
 
-.active.burger:before {
+.burger.active:before {
   transform: translateY(0) rotate(-45deg);
 }
 
-.active.burger:after {
+.burger.active:after {
   transform: translateY(0) rotate(45deg);
 }
 </style>
