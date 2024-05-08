@@ -9,23 +9,26 @@
     <hr />
 
     <p class="title">Code</p>
-    <div class="codeContainer">
-      <CodeEntry sub-title="oscardollman.com" link="https://github.com/redstarmy/oscar-dollman-web">
+    <div class="code-container">
+      <CodeEntry
+        sub-title="oscardollman.com"
+        link="https://github.com/redstarmy/oscar-dollman-web"
+      >
         <p class="text">
           This website is built using a
           <a target="_blank" class="link" href="https://vuejs.org/">Vue.js</a> frontend together
           with a simple
           <a target="_blank" class="link" href="https://expressjs.com/">Express</a> backend, mainly
-          to serve images. Deployment is also handled using Express. That way it can be deployed
-          using a single lightweight Docker container from
+          to serve images. Deployment is handled using Express to deploy in a single lightweight
+          Docker container from
           <a
             class="link"
             target="_blank"
             href="https://hub.docker.com/repository/docker/redstarmy/oscar-dollman-web/general"
-            >Dockerhub</a
-          >!
+          >
+            Dockerhub
+          </a>!
         </p>
-        <br />
         <p class="text">
           I'm a great fan of
           <a class="link" target="_blank" href="https://www.typescriptlang.org/">Typescript</a>,
@@ -54,16 +57,15 @@
         link="https://github.com/redstarmy/LEA_bot"
       >
         <p class="text">
-          This is a direct result of my deep frustration with Berlins
-          <a class="link" target="_blank" href="https://otv.verwalt-berlin.de/ams/TerminBuchen"
-            >Landesamt für Einwanderung</a
-          >
+          This is a direct result of my deep frustration with Berlin's
+          <a class="link" target="_blank" href="https://otv.verwalt-berlin.de/ams/TerminBuchen">
+            Landesamt für Einwanderung
+          </a>
           (LEA). It is a
           <a class="link" target="_blank" href="https://www.selenium.dev/">Selenium</a> bot which
-          scrapes the LEA appointment webpage and notifies the user once new appointments have been
-          released.
+          scrapes the LEA appointment webpage and notifies the user once new appointments are
+          available.
         </p>
-        <br />
         <p class="text">
           I spent several weeks employing various strategies across different times of the day.
           Furthermore, I attempted to reach out to the LEA through both email and traditional mail,
@@ -85,36 +87,48 @@
 
 <style scoped>
 hr {
-  border: 1px solid rgb(128, 128, 128, 0.5);
+  border: 1px solid rgba(128, 128, 128, 0.5);
   margin: 30px 15px;
 }
+
 .description {
   padding: 30px 10px;
 }
+
 .link {
   color: black;
 }
+
 .text {
   display: block;
   font-size: 20px;
+  margin-bottom: 1rem;
 }
+
 .title {
   display: block;
   font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.code-container {
+  column-count: 1;
+  column-gap: 20px;
 }
 
 @media only screen and (min-width: 768px) {
-  .codeContainer {
+  .code-container {
     column-count: 2;
-    column-gap: 40px;
   }
 }
+
 @media only screen and (min-width: 1200px) {
-  .codeContainer {
+  .code-container {
     column-count: 3;
   }
 }
 </style>
+
 <script setup lang="ts">
-import CodeEntry from '@/components/CodeEntry.vue'
+import CodeEntry from '@/components/CodeEntry.vue';
 </script>

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { cleanUp, getGallery } from "./support";
+import { cleanUp, getGallery, getProfileImg } from "./support";
 
 const app = express();
 const port = 3000;
@@ -9,10 +9,15 @@ const port = 3000;
 app.use(cors());
 
 const gallery = getGallery();
+const profileImg = getProfileImg()
 
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 app.use("/api/images", express.static(path.join(__dirname, "../images")));
+
+app.get("/api/get-profile", (_req, res) => {
+  res.json(profileImg);
+});
 
 app.get("/api/get-gallery", (_req, res) => {
   res.json(gallery);

@@ -7,6 +7,10 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 const imagePath = path.join(__dirname, "../images");
 
+export function getProfileImg(){
+  return {url: path.join("images", "Profile","/profile.jpeg")}
+}
+
 export function getGallery() {
   return fs
     .readdirSync(imagePath)

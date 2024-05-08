@@ -1,10 +1,10 @@
 <template>
-  <figure v-lazy>
+  <figure>
     <img
       :style="optStyle"
       ref="lazyImage"
       :alt="'image_' + srcImage.index"
-      :onload="onImageLoad"
+      @load="onImageLoad"
       :class="{ loading: !imageLoaded }"
     />
     <div
@@ -16,89 +16,112 @@
 </template>
 
 <script lang="ts" setup>
-import type { image } from '../../../shared/api'
-import { API_ENDPOINT } from '../../../shared/api'
-import type { UseIntersectionObserverOptions } from '@vueuse/core'
-import { useIntersectionObserver, useWindowSize } from '@vueuse/core'
-import {ref, watch } from 'vue'
-import type { PropType } from 'vue'
+import type { image } from '../../../shared/api';
+import { API_ENDPOINT } from '../../../shared/api';
+import { ref, watch, onMounted } from 'vue';
+import type { PropType } from 'vue';
+import { useIntersectionObserver, useWindowSize } from '@vueuse/core';
 
 const props = defineProps({
   srcImage: {
     type: Object as PropType<image>,
-    required: true
+    required: true,
   },
-  windowWidth: Number,
-  optStyle: String
-})
-const imageLoaded = ref(false)
-const lazyImage = ref()
+  windowWidth: {
+    type: Number,
+    required: true,
+  },
+  optStyle: {
+    type: String,
+    default: '',
+  },
+});
+
+const imageLoaded = ref(false);
+const lazyImage = ref<HTMLImageElement | null>(null);
+
+const setSize = (windowWidth: number): 'small' | 'medium' | 'large' => {
+  if (windowWidth === -1) {
+    return 'large';
+  } else if (windowWidth < 500) {
+    return 'small';
+  } else if (windowWidth < 768) {
+    return 'medium';
+  } else if (windowWidth < 900) {
+    return 'small';
+  } else if (windowWidth < 1200) {
+    return 'medium';
+  } else if (windowWidth < 1500) {
+    return 'small';
+  } else {
+    return 'medium';
+  }
+};
+
+const getSrcImg = (img: image) => {
+  switch (setSize(props.windowWidth)) {
+    case 'small':
+      return `${API_ENDPOINT}${img.smallUrl}`;
+    case 'medium':
+      return `${API_ENDPOINT}${img.mediumUrl}`;
+    default:
+      return `${API_ENDPOINT}${img.url}`;
+  }
+};
+
+const loadLazyImage = () => {
+  if (lazyImage.value) {
+    lazyImage.value.src = getSrcImg(props.srcImage);
+  }
+};
+
+const onImageLoad = () => {
+  imageLoaded.value = true;
+};
+
+const getPlaceholderAspectRatio = (image: image) =>
+  image.width && image.height ? image.width / image.height : 1;
+
+const observeLazyImage = (figure: HTMLElement) => {
+  const handleIntersect = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        loadLazyImage();
+        observer.unobserve(figure);
+      }
+    });
+  };
+
+  const windowWidth = useWindowSize().width.value;
+  const observerOptions = {
+    root: null,
+    threshold: 0,
+    rootMargin: windowWidth > 768 ? '30%' : '50%',
+  };
+
+  useIntersectionObserver(figure, handleIntersect, observerOptions);
+};
+
+onMounted(() => {
+  if (lazyImage.value) {
+    observeLazyImage(lazyImage.value.parentElement as HTMLElement);
+  }
+});
 
 watch(
   () => props.srcImage,
   () => {
-    imageLoaded.value = false
-    lazyImage.value.src = getSrcImg(props.srcImage)
+    imageLoaded.value = false;
+    loadLazyImage();
   }
-)
-
-const setSize = (windowWidth: number) => {
-  if (windowWidth == -1) {
-    return 'large'
-  } else if (windowWidth < 500) {
-    return 'small'
-  } else if (windowWidth < 768) {
-    return 'medium'
-  } else if (windowWidth < 900) {
-    return 'small'
-  } else if (windowWidth < 1200) {
-    return 'medium'
-  } else if (windowWidth < 1500) {
-    return 'small'
-  } else {
-    return 'medium'
-  }
-}
-
-const getSrcImg = (img: image) => {
-  switch (setSize(props.windowWidth ?? 900)) {
-    case 'small':
-      return API_ENDPOINT + img.smallUrl
-    case 'medium':
-      return API_ENDPOINT + img.mediumUrl
-    default:
-      return API_ENDPOINT + img.url
-  }
-}
-
-const vLazy = {
-  mounted: (figure: HTMLElement) => {
-    function handleIntersect(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          lazyImage.value.src = getSrcImg(props.srcImage)
-          observer.unobserve(figure)
-        }
-      })
-    }
-    useIntersectionObserver(figure, handleIntersect, {
-      root: null,
-      threshold: '0',
-      rootMargin: useWindowSize().width.value > 768 ? '30%' : '50%'
-    } as unknown as UseIntersectionObserverOptions)
-  }
-}
-
-const getPlaceholderAspectRatio = (image: image) =>
-  image.width && image.height ? image.width / image.height : 1
-
-const onImageLoad = () => (imageLoaded.value = true)
+);
 </script>
 
 <style scoped>
 img {
   width: 100%;
 }
+
 .loading {
   height: 0;
   position: absolute;
