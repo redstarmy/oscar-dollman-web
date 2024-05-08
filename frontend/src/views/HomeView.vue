@@ -10,10 +10,7 @@
 
     <p class="title">Code</p>
     <div class="code-container">
-      <CodeEntry
-        sub-title="oscardollman.com"
-        link="https://github.com/redstarmy/oscar-dollman-web"
-      >
+      <CodeEntry sub-title="oscardollman.com" link="https://github.com/redstarmy/oscar-dollman-web">
         <p class="text">
           This website is built using a
           <a target="_blank" class="link" href="https://vuejs.org/">Vue.js</a> frontend together
@@ -26,8 +23,8 @@
             target="_blank"
             href="https://hub.docker.com/repository/docker/redstarmy/oscar-dollman-web/general"
           >
-            Dockerhub
-          </a>!
+            Dockerhub </a
+          >!
         </p>
         <p class="text">
           I'm a great fan of
@@ -130,5 +127,5 @@ hr {
 </style>
 
 <script setup lang="ts">
-import CodeEntry from '@/components/CodeEntry.vue';
+import CodeEntry from '@/components/CodeEntry.vue'
 </script>

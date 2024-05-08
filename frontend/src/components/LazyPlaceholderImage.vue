@@ -1,131 +1,134 @@
 <template>
-  <figure>
+  <figure :style="{ aspectRatio: getAspectRatio(srcImage) }">
     <img
+      :src="imageSrc"
+      alt="placeholder"
       :style="optStyle"
       ref="lazyImage"
-      :alt="'image_' + srcImage.index"
       @load="onImageLoad"
       :class="{ loading: !imageLoaded }"
     />
-    <div
-      v-if="!imageLoaded"
-      class="flashing-placeholder"
-      :style="{ aspectRatio: getPlaceholderAspectRatio(srcImage) }"
-    />
+    <div v-if="!imageLoaded" class="flashing-placeholder" />
   </figure>
 </template>
 
 <script lang="ts" setup>
-import type { image } from '../../../shared/api';
-import { API_ENDPOINT } from '../../../shared/api';
-import { ref, watch, onMounted } from 'vue';
-import type { PropType } from 'vue';
-import { useIntersectionObserver, useWindowSize } from '@vueuse/core';
+import type { image } from '../../../shared/api'
+import { API_ENDPOINT } from '../../../shared/api'
+import { ref, watch, onMounted } from 'vue'
+import type { PropType } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const props = defineProps({
   srcImage: {
     type: Object as PropType<image>,
-    required: true,
+    required: true
   },
   windowWidth: {
     type: Number,
-    required: true,
+    required: true
   },
   optStyle: {
     type: String,
-    default: '',
-  },
-});
+    default: ''
+  }
+})
 
-const imageLoaded = ref(false);
-const lazyImage = ref<HTMLImageElement | null>(null);
+const imageLoaded = ref(false)
+const lazyImage = ref<HTMLImageElement | null>(null)
+const imageSrc = ref('')
 
-const setSize = (windowWidth: number): 'small' | 'medium' | 'large' => {
-  if (windowWidth === -1) {
-    return 'large';
-  } else if (windowWidth < 500) {
-    return 'small';
-  } else if (windowWidth < 768) {
-    return 'medium';
-  } else if (windowWidth < 900) {
-    return 'small';
+const getSizeForWindowWidth = (windowWidth: number): 'small' | 'medium' | 'large' => {
+  if (windowWidth < 768) {
+    return 'small'
   } else if (windowWidth < 1200) {
-    return 'medium';
-  } else if (windowWidth < 1500) {
-    return 'small';
+    return 'medium'
   } else {
-    return 'medium';
+    return 'large'
   }
-};
+}
 
-const getSrcImg = (img: image) => {
-  switch (setSize(props.windowWidth)) {
+const getSrcImg = (img: image, size: 'small' | 'medium' | 'large') => {
+  switch (size) {
     case 'small':
-      return `${API_ENDPOINT}${img.smallUrl}`;
+      return `${API_ENDPOINT}${img.smallUrl}`
     case 'medium':
-      return `${API_ENDPOINT}${img.mediumUrl}`;
+      return `${API_ENDPOINT}${img.mediumUrl}`
     default:
-      return `${API_ENDPOINT}${img.url}`;
+      return `${API_ENDPOINT}${img.url}`
   }
-};
+}
 
-const loadLazyImage = () => {
-  if (lazyImage.value) {
-    lazyImage.value.src = getSrcImg(props.srcImage);
-  }
-};
+const loadInitialImage = () => {
+  const size = getSizeForWindowWidth(props.windowWidth)
+  imageSrc.value = getSrcImg(props.srcImage, size)
+}
 
 const onImageLoad = () => {
-  imageLoaded.value = true;
-};
+  imageLoaded.value = true
+}
 
-const getPlaceholderAspectRatio = (image: image) =>
-  image.width && image.height ? image.width / image.height : 1;
+const getAspectRatio = (img: image) =>
+  img.width && img.height ? `${img.width}/${img.height}` : '1'
 
 const observeLazyImage = (figure: HTMLElement) => {
-  const handleIntersect = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+  const handleIntersect = (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver
+  ) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        loadLazyImage();
-        observer.unobserve(figure);
+        loadInitialImage()
+        observer.unobserve(figure)
       }
-    });
-  };
+    })
+  }
 
-  const windowWidth = useWindowSize().width.value;
   const observerOptions = {
     root: null,
-    threshold: 0,
-    rootMargin: windowWidth > 768 ? '30%' : '50%',
-  };
+    threshold: 0.1,
+    rootMargin: '30%'
+  }
 
-  useIntersectionObserver(figure, handleIntersect, observerOptions);
-};
+  useIntersectionObserver(figure, handleIntersect, observerOptions)
+}
 
 onMounted(() => {
   if (lazyImage.value) {
-    observeLazyImage(lazyImage.value.parentElement as HTMLElement);
+    observeLazyImage(lazyImage.value.parentElement as HTMLElement)
   }
-});
+})
 
 watch(
   () => props.srcImage,
   () => {
-    imageLoaded.value = false;
-    loadLazyImage();
+    imageLoaded.value = false
+    loadInitialImage()
   }
-);
+)
 </script>
 
 <style scoped>
+figure {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
 img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .loading {
-  height: 0;
+  opacity: 0;
   position: absolute;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .flashing-placeholder {

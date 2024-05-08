@@ -6,15 +6,16 @@ import { cleanUp, getGallery, getProfileImg } from "./support";
 const app = express();
 const port = 3000;
 
+// Middleware
 app.use(cors());
-
-const gallery = getGallery();
-const profileImg = getProfileImg()
-
 app.use(express.static(path.join(__dirname, "../frontend")));
-
 app.use("/api/images", express.static(path.join(__dirname, "../images")));
 
+// Data fetching
+const gallery = getGallery();
+const profileImg = getProfileImg();
+
+// Routes
 app.get("/api/get-profile", (_req, res) => {
   res.json(profileImg);
 });
@@ -24,19 +25,23 @@ app.get("/api/get-gallery", (_req, res) => {
 });
 
 app.get("/api/get-album/:country", (req, res) => {
-  res.json(
-    gallery.find((country) => country.name.toString() == req.params.country),
+  const album = gallery.find(
+    (country) => country.name.toString() === req.params.country,
   );
+  res.json(album);
 });
 
+// Catch-all route
 app.get("*", (_req, res) => {
   res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
 
+// Server listener
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
+// Cleanup function
 function handleCleanUp() {
   console.log("\nCleaning up..");
   cleanUp();

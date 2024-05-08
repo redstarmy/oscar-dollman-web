@@ -2,15 +2,16 @@
   <div>
     <nav>
       <RouterLink
-        v-for="route in router.getRoutes().filter((routeItem) => routeItem.name != 'album')"
-        v-bind:key="route.name"
+        v-for="route in filteredRoutes"
+        :key="route.name"
         :to="route.path"
-        @mouseleave="resetOffset()"
+        @mouseleave="resetOffset"
         @mouseover="hoverOffset(route)"
-        >{{ route.meta.title }}
+      >
+        {{ route.meta.title }}
       </RouterLink>
     </nav>
-    <div v-if="currentRoute.name" class="tab_underline" v-bind:style="tabOffset" />
+    <div v-if="currentRoute.name" class="tab_underline" :style="tabOffset" />
   </div>
 </template>
 
@@ -38,17 +39,26 @@ nav a {
 
 <script lang="ts" setup>
 import { RouterLink, useRoute } from 'vue-router'
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import router from '@/router'
 
 const currentRoute = useRoute()
-const tabOffset = ref()
+const tabOffset = ref<{ marginLeft: string }>({ marginLeft: '0%' })
 
-watch([currentRoute, useWindowSize().width], () => {
-  resetOffset()
-})
+const filteredRoutes = computed(() => router.getRoutes().filter((route) => route.name !== 'album'))
 
-const resetOffset = () => (tabOffset.value = { marginLeft: 33.33 * currentRoute.meta.offset + '%' })
-const hoverOffset = (tab: any) => (tabOffset.value = { marginLeft: 33.33 * tab.meta.offset + '%' })
+const resetOffset = () => {
+  const offset = currentRoute.meta.offset || 0
+  tabOffset.value = { marginLeft: `${33.33 * offset}%` }
+}
+
+const hoverOffset = (route: any) => {
+  const offset = route.meta.offset || 0
+  tabOffset.value = { marginLeft: `${33.33 * offset}%` }
+}
+
+watch([currentRoute, useWindowSize().width], resetOffset)
+
+resetOffset()
 </script>

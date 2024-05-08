@@ -6,13 +6,13 @@ export const API_ENDPOINT =
 export const imgRegex = /^(?!small-|medium-).*\.(jpeg|jpg|png)$/i;
 
 export enum validCountryNames {
-  "India",
-  "Singapore",
-  "Paris",
-  "Berlin",
-  "UK",
-  "Black_&_White",
-  "Holland",
+  India = "India",
+  Singapore = "Singapore",
+  Paris = "Paris",
+  Berlin = "Berlin",
+  UK = "UK",
+  BlackAndWhite = "Black_&_White",
+  Holland = "Holland",
 }
 
 export type image = {

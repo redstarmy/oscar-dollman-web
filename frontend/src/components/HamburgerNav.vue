@@ -16,30 +16,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
-import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { ref, computed, watch } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
-const isOpen = ref(false);
-const activeRoute = useRoute();
-const router = useRouter();
+const isOpen = ref(false)
+const activeRoute = useRoute()
+const router = useRouter()
 
 // Toggle the menu open or closed
 const toggleMenu = () => {
-  isOpen.value = !isOpen.value;
-};
+  isOpen.value = !isOpen.value
+}
 
 // Close the menu
 const closeMenu = () => {
-  isOpen.value = false;
-};
+  isOpen.value = false
+}
 
 // Watch for changes in the active route to close the menu
-watch(() => activeRoute.name, closeMenu);
+watch(() => activeRoute.name, closeMenu)
 
 // Filter out the 'album' route
-const filteredRoutes = computed(() =>
-  router.getRoutes().filter((route) => route.name !== 'album')
-);
+const filteredRoutes = computed(() => router.getRoutes().filter((route) => route.name !== 'album'))
 </script>
 
 <style scoped>
