@@ -42,7 +42,7 @@ function createServer() {
 
   const getAlbum = (req: express.Request, res: express.Response) => {
     const album = gallery.find(
-      (country) => country.name.toString() === req.params.country
+      (country) => country.name.toString() === req.params.country,
     );
     res.json(album);
   };

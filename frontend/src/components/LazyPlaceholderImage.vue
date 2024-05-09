@@ -1,5 +1,6 @@
+<!-- LazyPlaceholderImage.vue -->
 <template>
-  <figure :style="{ aspectRatio: getAspectRatio(srcImage) }">
+  <figure :style="{ aspectRatio: getAspectRatio(srcImage) }" class="figure-frame">
     <img
       :src="imageSrc"
       alt="placeholder"
@@ -105,7 +106,7 @@ watch(
 </script>
 
 <style scoped>
-figure {
+.figure-frame {
   margin: 0;
   padding: 0;
   position: relative;

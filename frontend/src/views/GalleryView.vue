@@ -1,3 +1,4 @@
+<!-- GalleryComponent.vue -->
 <template>
   <div class="thumbnail-container">
     <div v-if="isLoading" class="loading">Loading gallery...</div>
@@ -6,12 +7,15 @@
         <div class="thumbnail-frame">
           <h2 class="thumbnail-title">{{ country.title }}</h2>
           <UseWindowSize v-slot="{ width }">
-            <lazy-placeholder-image :srcImage="country.thumbnail" :windowWidth="width" />
+            <lazy-placeholder-image
+              :srcImage="country.thumbnail"
+              :windowWidth="width"
+              style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15)"
+            />
           </UseWindowSize>
         </div>
       </RouterLink>
     </div>
-    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
   </div>
 </template>
 
@@ -69,8 +73,7 @@ onMounted(fetchGallery)
   color: black;
 }
 
-.loading,
-.error {
+.loading {
   font-size: 20px;
   text-align: center;
   padding: 20px;

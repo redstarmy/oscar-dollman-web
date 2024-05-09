@@ -1,3 +1,4 @@
+<!-- HomeComponent.vue -->
 <template>
   <div class="home-description">
     <p class="intro-text">
@@ -47,6 +48,7 @@
   object-fit: cover;
   object-position: center;
   margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 .intro-text {

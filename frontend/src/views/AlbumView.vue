@@ -6,33 +6,34 @@
       <div class="hidden-arrow">&lt;</div>
     </div>
 
-    <div v-if="detailIndex === -1" class="masonry-container">
-      <div
-        v-for="image in album.images"
-        :key="image.index"
-        class="masonry-image-container"
-        @click="openDetail(image)"
-        :id="image.index.toString()"
-      >
-        <UseWindowSize v-slot="{ width }">
-          <LazyPlaceholderImage :windowWidth="width" :srcImage="image" />
-        </UseWindowSize>
+    <div v-if="detailIndex === -1" class="masonry-wrapper">
+      <div class="masonry-container">
+        <div
+          v-for="image in album.images"
+          :key="image.index"
+          class="masonry-image-container"
+          @click="openDetail(image)"
+          :id="image.index.toString()"
+        >
+          <UseWindowSize v-slot="{ width }">
+            <LazyPlaceholderImage :windowWidth="width" :srcImage="image" />
+          </UseWindowSize>
+        </div>
       </div>
     </div>
 
     <div v-else class="detail-container">
       <div
         class="overlay overlay-left"
-        :style="{ maxHeight: detailSrc?.height }"
+        :style="{ maxHeight: detailSrc?.height || 'auto' }"
         @click="handleDetailBackward"
       ></div>
       <div class="overlay overlay-right" @click="handleDetailForward"></div>
       <div class="detail-nav-left">&lt;</div>
-      <LazyPlaceholderImage
-        :windowWidth="1201"
-        :srcImage="detailSrc"
-        optStyle="max-height: 80vh; max-width: 100%; width: auto"
-        size="large"
+      <img
+        :src="API_ENDPOINT + (detailSrc?.url || '')"
+        :alt="'Gallery'"
+        class="masonry-image"
       />
       <div class="detail-nav-right">&gt;</div>
     </div>
@@ -147,6 +148,18 @@ const handleDetailBackward = () => {
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+img {
+  max-height: 80vh;
+  width: auto;
+  max-width: 80%;
+}
+
+.masonry-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .masonry-container {
