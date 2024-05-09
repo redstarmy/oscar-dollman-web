@@ -33,7 +33,14 @@ import { API_ENDPOINT, type image } from '../../../shared/api'
 import { UseWindowSize } from '@vueuse/components'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 
-const profile = ref<image>({ url: '', smallUrl: '', mediumUrl: '', width: 5407, height: 3862, index: 0 })
+const profile = ref<image>({
+  url: '',
+  smallUrl: '',
+  mediumUrl: '',
+  width: 5407,
+  height: 3862,
+  index: 0
+})
 
 const fetchProfile = async () => {
   try {

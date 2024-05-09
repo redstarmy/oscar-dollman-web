@@ -1,54 +1,84 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { cleanUp, getGallery, getHomeImg, getProfileImg } from "./support";
+import {
+  cleanUp,
+  getGallery,
+  getHomeImg,
+  getProfileImg,
+  loadSourceCounts,
+  saveSourceCounts,
+} from "./support";
 
-const app = express();
-const port = 3000;
+function createServer() {
+  const app = express();
+  const port = 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.static(path.join(__dirname, "../frontend")));
-app.use("/api/images", express.static(path.join(__dirname, "../images")));
+  // Middleware
+  app.use(cors());
+  app.use(express.static(path.join(__dirname, "../frontend")));
+  app.use("/api/images", express.static(path.join(__dirname, "../images")));
+  app.use(express.json()); // Parse JSON bodies
 
-// Data fetching
-const gallery = getGallery();
-const profile = getProfileImg();
-const home = getHomeImg();
+  // Data fetching
+  const gallery = getGallery();
+  const profile = getProfileImg();
+  const home = getHomeImg();
 
-// Routes
-app.get("/api/get-profile", (_req, res) => {
-  res.json(profile);
-});
+  let sourceCounts: { [key: string]: number } = loadSourceCounts();
 
-app.get("/api/get-home", (_req, res) => {
-  res.json(home);
-});
+  // Route Handlers
+  const getProfile = (_req: express.Request, res: express.Response) => {
+    res.json(profile);
+  };
 
-app.get("/api/get-gallery", (_req, res) => {
-  res.json(gallery);
-});
+  const getHome = (_req: express.Request, res: express.Response) => {
+    res.json(home);
+  };
 
-app.get("/api/get-album/:country", (req, res) => {
-  const album = gallery.find(
-    (country) => country.name.toString() === req.params.country,
-  );
-  res.json(album);
-});
+  const getGalleryData = (_req: express.Request, res: express.Response) => {
+    res.json(gallery);
+  };
 
-// Catch-all route
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend", "index.html"));
-});
+  const getAlbum = (req: express.Request, res: express.Response) => {
+    const album = gallery.find(
+      (country) => country.name.toString() === req.params.country
+    );
+    res.json(album);
+  };
 
-// Server listener
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+  const trackSource = (req: express.Request, res: express.Response) => {
+    const { source } = req.body;
+    if (source) {
+      sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+      saveSourceCounts(sourceCounts);
+      res.status(200).json({ message: "Source tracked successfully" });
+    } else {
+      res.status(400).json({ message: "Missing source parameter" });
+    }
+  };
 
-// Cleanup function
+  // Routes
+  app.get("/api/get-profile", getProfile);
+  app.get("/api/get-home", getHome);
+  app.get("/api/get-gallery", getGalleryData);
+  app.get("/api/get-album/:country", getAlbum);
+  app.post("/api/track-source", trackSource);
+
+  // Catch-all route
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
+  });
+
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`Server listening at http://localhost:${port}`);
+  });
+
+  return app;
+}
+
 function handleCleanUp() {
-  console.log("\nCleaning up..");
+  console.log("\nCleaning up...");
   cleanUp();
   process.exit(0);
 }
@@ -56,3 +86,5 @@ function handleCleanUp() {
 process.on("SIGINT", handleCleanUp);
 process.on("SIGTERM", handleCleanUp);
 process.on("SIGQUIT", handleCleanUp);
+
+createServer();

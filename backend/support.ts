@@ -116,3 +116,25 @@ function resizeImage(
     .toFile(mediumUrl)
     .catch((err) => console.log(`Sharp exited with Error: ${err}`));
 }
+
+const sourceCountsFilePath = path.join(__dirname, "../source_counts.json");
+
+export const loadSourceCounts = (): { [key: string]: number } => {
+  try {
+    const data = fs.readFileSync(sourceCountsFilePath);
+    return JSON.parse(data.toString());
+  } catch (err) {
+    return {};
+  }
+};
+
+export const saveSourceCounts = (sourceCounts: { [key: string]: number }) => {
+  try {
+    fs.writeFileSync(
+      sourceCountsFilePath,
+      JSON.stringify(sourceCounts, null, 2),
+    );
+  } catch (err) {
+    console.error("Error saving source counts:", err);
+  }
+};

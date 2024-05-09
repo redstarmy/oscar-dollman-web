@@ -5,24 +5,22 @@
       <RouterLink class="link" to="/gallery">gallery</RouterLink> to showcase my photography work
       and as a platform to introduce myself to the world.
     </p>
-    <img
-      class="banner"
-      :src="API_ENDPOINT + bannerImage.url"
-      alt="Website Banner"
-    />
+    <img class="banner" :src="API_ENDPOINT + bannerImage.url" alt="Website Banner" />
 
     <div class="overview-container">
       <div class="overview-section">
         <p class="title">Gallery</p>
         <p class="text">
-          Check out the <RouterLink class="link" to="/gallery">gallery</RouterLink> to see my photography work.
+          Check out the <RouterLink class="link" to="/gallery">gallery</RouterLink> to see my
+          photography work.
         </p>
       </div>
       <div class="divider"></div>
       <div class="overview-section">
         <p class="title">Code</p>
         <p class="text">
-          Explore <RouterLink class="link" to="/code">my coding projects</RouterLink> ranging from web apps to bots.
+          Explore <RouterLink class="link" to="/code">my coding projects</RouterLink> ranging from
+          web apps to bots.
         </p>
       </div>
       <div class="divider"></div>
@@ -116,10 +114,17 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { onMounted, ref } from "vue";
-import { API_ENDPOINT, type image } from "../../../shared/api";
+import { onMounted, ref } from 'vue'
+import { API_ENDPOINT, type image } from '../../../shared/api'
 
-const bannerImage = ref<image>({ url: '', smallUrl: '', mediumUrl: '', width: 5407, height: 3862, index: 0 })
+const bannerImage = ref<image>({
+  url: '',
+  smallUrl: '',
+  mediumUrl: '',
+  width: 5407,
+  height: 3862,
+  index: 0
+})
 
 const fetchBanner = async () => {
   try {
