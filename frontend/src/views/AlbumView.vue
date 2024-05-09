@@ -28,14 +28,12 @@
       ></div>
       <div class="overlay overlay-right" @click="handleDetailForward"></div>
       <div class="detail-nav-left">&lt;</div>
-      <UseWindowSize v-slot="{ width }">
-        <LazyPlaceholderImage
-          size="large"
-          :windowWidth="detailIndex === -1 ? width : -1"
-          :srcImage="detailSrc"
-          optStyle="max-height: 80vh; max-width: 100%; width: auto"
-        />
-      </UseWindowSize>
+      <LazyPlaceholderImage
+        :windowWidth="1201"
+        :srcImage="detailSrc"
+        optStyle="max-height: 80vh; max-width: 100%; width: auto"
+        size="large"
+      />
       <div class="detail-nav-right">&gt;</div>
     </div>
   </div>

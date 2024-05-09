@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { cleanUp, getGallery, getProfileImg } from "./support";
+import { cleanUp, getGallery, getHomeImg, getProfileImg } from "./support";
 
 const app = express();
 const port = 3000;
@@ -13,11 +13,16 @@ app.use("/api/images", express.static(path.join(__dirname, "../images")));
 
 // Data fetching
 const gallery = getGallery();
-const profileImg = getProfileImg();
+const profile = getProfileImg();
+const home = getHomeImg();
 
 // Routes
 app.get("/api/get-profile", (_req, res) => {
-  res.json(profileImg);
+  res.json(profile);
+});
+
+app.get("/api/get-home", (_req, res) => {
+  res.json(home);
 });
 
 app.get("/api/get-gallery", (_req, res) => {

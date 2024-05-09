@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { image } from '../../../shared/api'
-import { API_ENDPOINT } from '../../../shared/api'
 import { ref, watch, onMounted } from 'vue'
 import type { PropType } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import type { image } from '../../../shared/api'
+import { API_ENDPOINT } from '../../../shared/api'
 
 const props = defineProps({
   srcImage: {
@@ -39,13 +39,9 @@ const lazyImage = ref<HTMLImageElement | null>(null)
 const imageSrc = ref('')
 
 const getSizeForWindowWidth = (windowWidth: number): 'small' | 'medium' | 'large' => {
-  if (windowWidth < 768) {
-    return 'small'
-  } else if (windowWidth < 1200) {
-    return 'medium'
-  } else {
-    return 'large'
-  }
+  if (windowWidth < 768) return 'small'
+  if (windowWidth < 1200) return 'medium'
+  return 'large'
 }
 
 const getSrcImg = (img: image, size: 'small' | 'medium' | 'large') => {

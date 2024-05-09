@@ -1,99 +1,77 @@
 <template>
-  <div class="description">
-    <p class="text">
-      This is my website. It serves the purpose of a
+  <div class="home-description">
+    <p class="intro-text">
+      This is my website. It serves as a
       <RouterLink class="link" to="/gallery">gallery</RouterLink> to showcase my photography work
       and as a platform to introduce myself to the world.
     </p>
 
-    <hr />
-
-    <p class="title">Code</p>
-    <div class="code-container">
-      <CodeEntry sub-title="oscardollman.com" link="https://github.com/redstarmy/oscar-dollman-web">
+    <div class="overview-container">
+      <div class="overview-section">
+        <p class="title">Gallery</p>
         <p class="text">
-          This website is built using a
-          <a target="_blank" class="link" href="https://vuejs.org/">Vue.js</a> frontend together
-          with a simple
-          <a target="_blank" class="link" href="https://expressjs.com/">Express</a> backend, mainly
-          to serve images. Deployment is handled using Express to deploy in a single lightweight
-          Docker container from
-          <a
-            class="link"
-            target="_blank"
-            href="https://hub.docker.com/repository/docker/redstarmy/oscar-dollman-web/general"
-          >
-            Dockerhub </a
-          >!
+          Check out the <RouterLink class="link" to="/gallery">gallery</RouterLink> to see my
+          photography work.
         </p>
+      </div>
+      <div class="divider"></div>
+      <div class="overview-section">
+        <p class="title">Code</p>
         <p class="text">
-          I'm a great fan of
-          <a class="link" target="_blank" href="https://www.typescriptlang.org/">Typescript</a>,
-          which is why both backend and frontend are written with strict type checking.
+          Explore <RouterLink class="link" to="/code">my coding projects</RouterLink> ranging from
+          web apps to bots.
         </p>
-      </CodeEntry>
-
-      <CodeEntry
-        sub-title="Kopfsachen Native App"
-        link="https://github.com/ProgPrak-Native-App/react-native-app"
-      >
+      </div>
+      <div class="divider"></div>
+      <div class="overview-section">
+        <p class="title">About Me</p>
         <p class="text">
-          Kopfsachen Native App is a
-          <a class="link" target="_blank" href="https://reactnative.dev/">React Native</a> based App
-          build for
-          <a class="link" target="_blank" href="https://www.kopfsachen.org/">Kopfsachen eV.</a>
-          which is an association dedicated to the promotion of young people's mental health. In the
-          open source spirit, this app is freely available and aims to provide mental support on the
-          go. For development and prototyping
-          <a class="link" target="_blank" href="https://expo.dev/">Expo</a> was used.
+          Learn more <RouterLink class="link" to="/me">about me</RouterLink> and get in touch.
         </p>
-      </CodeEntry>
-
-      <CodeEntry
-        sub-title="Berlin Landesamt für Einwanderung Bot"
-        link="https://github.com/redstarmy/LEA_bot"
-      >
-        <p class="text">
-          This is a direct result of my deep frustration with Berlin's
-          <a class="link" target="_blank" href="https://otv.verwalt-berlin.de/ams/TerminBuchen">
-            Landesamt für Einwanderung
-          </a>
-          (LEA). It is a
-          <a class="link" target="_blank" href="https://www.selenium.dev/">Selenium</a> bot which
-          scrapes the LEA appointment webpage and notifies the user once new appointments are
-          available.
-        </p>
-        <p class="text">
-          I spent several weeks employing various strategies across different times of the day.
-          Furthermore, I attempted to reach out to the LEA through both email and traditional mail,
-          but my efforts yielded no success. Since there aren't any discernible patterns for the
-          release of new appointments, I forked
-          <a
-            class="link"
-            target="_blank"
-            href="https://github.com/capital-G/berlin-auslanderbehorde-termin-bot"
-            >an existing bot</a
-          >
-          and improved upon it's stability and reliabilty.
-        </p>
-        <p class="text"></p>
-      </CodeEntry>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-hr {
-  border: 1px solid rgba(128, 128, 128, 0.5);
-  margin: 30px 15px;
+.home-description {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 10px;
 }
 
-.description {
-  padding: 30px 10px;
+.intro-text {
+  display: block;
+  font-size: 20px;
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.overview-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  gap: 20px;
+}
+
+.overview-section {
+  flex: 1;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.divider {
+  width: 1px;
+  height: 80%;
+  background-color: rgba(128, 128, 128, 0.5);
 }
 
 .link {
   color: black;
+  text-decoration: underline;
 }
 
 .text {
@@ -108,24 +86,23 @@ hr {
   margin-bottom: 15px;
 }
 
-.code-container {
-  column-count: 1;
-  column-gap: 20px;
-}
-
-@media only screen and (min-width: 768px) {
-  .code-container {
-    column-count: 2;
+@media only screen and (max-width: 768px) {
+  .overview-container {
+    flex-direction: column;
   }
-}
 
-@media only screen and (min-width: 1200px) {
-  .code-container {
-    column-count: 3;
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 20px 0;
+  }
+
+  .overview-section {
+    padding: 20px 0;
   }
 }
 </style>
 
 <script setup lang="ts">
-import CodeEntry from '@/components/CodeEntry.vue'
+import { RouterLink } from 'vue-router'
 </script>

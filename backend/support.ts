@@ -7,8 +7,30 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 const imagePath = path.join(__dirname, "../images");
 
-export function getProfileImg() {
-  return { url: path.join("images", "Profile", "profile.jpeg") };
+export function getProfileImg(): image {
+  const profilePath = path.join("images", "Profile", "profile.jpeg");
+  const dimensions = imageSize(path.join(__dirname, "../", profilePath));
+  return {
+    url: profilePath,
+    mediumUrl: profilePath,
+    smallUrl: profilePath,
+    height: dimensions.height,
+    width: dimensions.width,
+    index: 0,
+  } as image;
+}
+
+export function getHomeImg(): image {
+  const homePath = path.join("images", "Home", "home.jpeg");
+  const dimensions = imageSize(path.join(__dirname, "../", homePath));
+  return {
+    url: homePath,
+    mediumUrl: homePath,
+    smallUrl: homePath,
+    height: dimensions.height,
+    width: dimensions.width,
+    index: 0,
+  } as image;
 }
 
 export function getGallery(): country[] {

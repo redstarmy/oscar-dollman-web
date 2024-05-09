@@ -3,7 +3,7 @@
     <nav>
       <RouterLink
         v-for="route in filteredRoutes"
-        :key="route.name"
+        :key="route.name as string"
         :to="route.path"
         @mouseleave="resetOffset"
         @mouseover="hoverOffset(route)"
@@ -31,7 +31,7 @@ nav a {
 
 .tab_underline {
   height: 2px;
-  width: 33.33%;
+  width: 25%; /* Adjusted to accommodate 4 items */
   background-color: black;
   transition: 0.3s;
 }
@@ -46,16 +46,20 @@ import router from '@/router'
 const currentRoute = useRoute()
 const tabOffset = ref<{ marginLeft: string }>({ marginLeft: '0%' })
 
-const filteredRoutes = computed(() => router.getRoutes().filter((route) => route.name !== 'album'))
+const filteredRoutes = computed(() =>
+  router
+    .getRoutes()
+    .filter((route) => ['overview', 'gallery', 'code', 'me'].includes(route.name as string))
+)
 
 const resetOffset = () => {
   const offset = currentRoute.meta.offset || 0
-  tabOffset.value = { marginLeft: `${33.33 * offset}%` }
+  tabOffset.value = { marginLeft: `${25 * offset}%` }
 }
 
 const hoverOffset = (route: any) => {
   const offset = route.meta.offset || 0
-  tabOffset.value = { marginLeft: `${33.33 * offset}%` }
+  tabOffset.value = { marginLeft: `${25 * offset}%` }
 }
 
 watch([currentRoute, useWindowSize().width], resetOffset)

@@ -24,10 +24,16 @@ const router = createRouter({
       meta: { offset: 1, title: 'Gallery' }
     },
     {
+      path: '/code',
+      name: 'code',
+      component: () => import('@/views/CodeView.vue'),
+      meta: { offset: 2, title: 'Code' }
+    },
+    {
       path: '/me',
       name: 'me',
       component: () => import('@/views/MeView.vue'),
-      meta: { offset: 2, title: 'Me' }
+      meta: { offset: 3, title: 'Me' }
     },
     {
       path: '/gallery/:countryName',
