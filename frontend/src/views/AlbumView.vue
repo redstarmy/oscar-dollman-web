@@ -62,7 +62,7 @@ const fetchAlbum = async () => {
 
   if (cachedData) {
     album.value = JSON.parse(cachedData)
-    detailMaxIndex.value = album.value?.images.length - 1 || 0
+    detailMaxIndex.value = (album.value?.images?.length ?? 0) - 1
   } else {
     try {
       const response = await fetch(`${API_ENDPOINT}get-album/${props.countryName}`)
