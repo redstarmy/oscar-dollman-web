@@ -32,29 +32,29 @@ const isLoading = ref(true)
 const errorMessage = ref('')
 
 const fetchGallery = async () => {
-  isLoading.value = true; // Ensure loading is true at the start of the fetch operation
+  isLoading.value = true // Ensure loading is true at the start of the fetch operation
   try {
     // Attempt to retrieve cached data first
-    const cachedGallery = sessionStorage.getItem('gallery');
+    const cachedGallery = sessionStorage.getItem('gallery')
     if (cachedGallery) {
-      gallery.value = JSON.parse(cachedGallery);
-      isLoading.value = false; // Set loading false here if cache is used
+      gallery.value = JSON.parse(cachedGallery)
+      isLoading.value = false // Set loading false here if cache is used
     } else {
-      const response = await fetch(API_ENDPOINT + 'get-gallery');
+      const response = await fetch(API_ENDPOINT + 'get-gallery')
       if (!response.ok) {
-        throw new Error(`Network response was not ok, status: ${response.status}`);
+        throw new Error(`Network response was not ok, status: ${response.status}`)
       }
-      gallery.value = await response.json();
-      sessionStorage.setItem('gallery', JSON.stringify(gallery.value)); // Cache the fetched gallery
-      isLoading.value = false; // Set loading false here after successful fetch
+      gallery.value = await response.json()
+      sessionStorage.setItem('gallery', JSON.stringify(gallery.value)) // Cache the fetched gallery
+      isLoading.value = false // Set loading false here after successful fetch
     }
   } catch (error) {
-    isLoading.value = false; // Ensure loading is set to false when an error occurs
+    isLoading.value = false // Ensure loading is set to false when an error occurs
     if (error instanceof Error) {
-      errorMessage.value = 'Error fetching image URLs: ' + error.message;
+      errorMessage.value = 'Error fetching image URLs: ' + error.message
     } else {
       // If the error is not an instance of Error, it might be a string or another type
-      errorMessage.value = 'An unexpected error occurred';
+      errorMessage.value = 'An unexpected error occurred'
     }
   }
 }

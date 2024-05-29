@@ -1,8 +1,9 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../shared/*.ts"],
-  "exclude": ["frontend/src/**/__tests__/*"],
+  "exclude": ["frontend/src/**/__tests__/*", "node_modules"],
   "compilerOptions": {
+    "module": "ESNext",
     "target": "ESNext",
     "composite": true,
     "strict": true,
@@ -11,6 +12,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["node"]
+    "types": ["node"],
+    "noEmit": false
   }
 }

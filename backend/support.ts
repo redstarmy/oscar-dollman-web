@@ -117,7 +117,10 @@ function resizeImage(
     .catch((err) => console.log(`Sharp exited with Error: ${err}`));
 }
 
-const sourceCountsFilePath = path.join(__dirname, "../images/source_counts.json");
+const sourceCountsFilePath = path.join(
+  __dirname,
+  "../images/source_counts.json",
+);
 
 export const loadSourceCounts = (): { [key: string]: number } => {
   try {

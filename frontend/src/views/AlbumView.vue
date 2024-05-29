@@ -30,89 +30,86 @@
       ></div>
       <div class="overlay overlay-right" @click="handleDetailForward"></div>
       <div class="detail-nav-left">&lt;</div>
-      <img
-        :src="API_ENDPOINT + (detailSrc?.url || '')"
-        :alt="'Gallery'"
-        class="masonry-image"
-      />
+      <img :src="API_ENDPOINT + (detailSrc?.url || '')" :alt="'Gallery'" class="masonry-image" />
       <div class="detail-nav-right">&gt;</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed, nextTick } from 'vue';
-import router from '@/router';
-import type { image } from '../../../shared/api';
-import { API_ENDPOINT } from '../../../shared/api';
-import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue';
-import { useWindowSize } from '@vueuse/core';
-import { UseWindowSize } from '@vueuse/components';
+import { onMounted, ref, computed, nextTick } from 'vue'
+import router from '@/router'
+import type { image } from '../../../shared/api'
+import { API_ENDPOINT } from '../../../shared/api'
+import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
+import { useWindowSize } from '@vueuse/core'
+import { UseWindowSize } from '@vueuse/components'
 
 const props = defineProps({
   countryName: String
-});
+})
 
-const album = ref<{ title: string; images: image[] } | null>(null);
-const detailIndex = ref(-1);
-const detailMaxIndex = ref(0);
-const detailSrc = computed(
-  () => album.value?.images.find((img) => img.index === detailIndex.value) || null
-);
+const album = ref<{ title: string; images: image[] } | null>(null)
+const detailIndex = ref(-1)
+const detailMaxIndex = ref(0)
+const detailSrc = computed(() => {
+  return album.value?.images?.find((img) => img.index === detailIndex.value) || null
+})
 
 const fetchAlbum = async () => {
-  const cacheKey = `album-${props.countryName}`;
-  const cachedData = sessionStorage.getItem(cacheKey);
+  const cacheKey = `album-${props.countryName}`
+  const cachedData = sessionStorage.getItem(cacheKey)
 
   if (cachedData) {
-    album.value = JSON.parse(cachedData);
-    detailMaxIndex.value = album.value?.images.length - 1 || 0;
+    album.value = JSON.parse(cachedData)
+    detailMaxIndex.value = album.value?.images.length - 1 || 0
   } else {
     try {
-      const response = await fetch(`${API_ENDPOINT}get-album/${props.countryName}`);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      album.value = data;
-      detailMaxIndex.value = data.images.length - 1;
-      sessionStorage.setItem(cacheKey, JSON.stringify(data));
+      const response = await fetch(`${API_ENDPOINT}get-album/${props.countryName}`)
+      if (!response.ok) throw new Error('Network response was not ok')
+      const data = await response.json()
+      album.value = data
+      detailMaxIndex.value = data.images.length - 1
+      sessionStorage.setItem(cacheKey, JSON.stringify(data))
     } catch (error) {
-      console.error('Error fetching album:', error instanceof Error ? error.message : 'Unknown error');
+      console.error(
+        'Error fetching album:',
+        error instanceof Error ? error.message : 'Unknown error'
+      )
     }
   }
-};
+}
 
-onMounted(fetchAlbum);
+onMounted(fetchAlbum)
 
 const openDetail = (image: image) => {
   if (album.value && useWindowSize().width.value > 768) {
-    detailIndex.value = image.index;
+    detailIndex.value = image.index
   }
-};
+}
 
 const handleBack = () => {
   if (detailIndex.value === -1) {
-    router.go(-1);
+    router.go(-1)
   } else {
-    const scrollToElement = detailIndex.value.toString();
-    detailIndex.value = -1;
-    nextTick(() => document.getElementById(scrollToElement)?.scrollIntoView());
+    const scrollToElement = detailIndex.value.toString()
+    detailIndex.value = -1
+    nextTick(() => document.getElementById(scrollToElement)?.scrollIntoView())
   }
-};
+}
 
 const handleDetailForward = () => {
   if (album.value) {
-    detailIndex.value = Math.min(detailIndex.value + 1, detailMaxIndex.value);
+    detailIndex.value = Math.min(detailIndex.value + 1, detailMaxIndex.value)
   }
-};
+}
 
 const handleDetailBackward = () => {
   if (album.value) {
-    detailIndex.value = Math.max(detailIndex.value - 1, 0);
+    detailIndex.value = Math.max(detailIndex.value - 1, 0)
   }
-};
+}
 </script>
-
-
 
 <style scoped>
 .album-title {
