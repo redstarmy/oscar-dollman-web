@@ -41,61 +41,78 @@
 </template>
 
 <script lang="ts" setup>
-import type { image } from '../../../shared/api'
-import { API_ENDPOINT } from '../../../shared/api'
-import { ref, computed, onMounted, nextTick } from 'vue'
-import router from '@/router'
-import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
-import { useWindowSize } from '@vueuse/core'
-import { UseWindowSize } from '@vueuse/components'
+import { onMounted, ref, computed, nextTick } from 'vue';
+import router from '@/router';
+import type { image } from '../../../shared/api';
+import { API_ENDPOINT } from '../../../shared/api';
+import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue';
+import { useWindowSize } from '@vueuse/core';
+import { UseWindowSize } from '@vueuse/components';
 
 const props = defineProps({
   countryName: String
-})
+});
 
-const album = ref<{ title: string; images: image[] } | null>(null)
-const detailIndex = ref(-1)
-const detailMaxIndex = ref(0)
+const album = ref<{ title: string; images: image[] } | null>(null);
+const detailIndex = ref(-1);
+const detailMaxIndex = ref(0);
 const detailSrc = computed(
   () => album.value?.images.find((img) => img.index === detailIndex.value) || null
-)
+);
 
 const fetchAlbum = async () => {
-  try {
-    const response = await fetch(`${API_ENDPOINT}get-album/${props.countryName}`)
-    if (!response.ok) throw new Error('Network response was not ok')
-    const data = await response.json()
-    album.value = data
-    detailMaxIndex.value = data.images.length - 1
-  } catch (error) {
-    console.error('Error fetching album:', error)
-  }
-}
+  const cacheKey = `album-${props.countryName}`;
+  const cachedData = sessionStorage.getItem(cacheKey);
 
-onMounted(fetchAlbum)
+  if (cachedData) {
+    album.value = JSON.parse(cachedData);
+    detailMaxIndex.value = album.value?.images.length - 1 || 0;
+  } else {
+    try {
+      const response = await fetch(`${API_ENDPOINT}get-album/${props.countryName}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      album.value = data;
+      detailMaxIndex.value = data.images.length - 1;
+      sessionStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (error) {
+      console.error('Error fetching album:', error instanceof Error ? error.message : 'Unknown error');
+    }
+  }
+};
+
+onMounted(fetchAlbum);
 
 const openDetail = (image: image) => {
-  if (useWindowSize().width.value > 768) detailIndex.value = image.index
-}
+  if (album.value && useWindowSize().width.value > 768) {
+    detailIndex.value = image.index;
+  }
+};
 
 const handleBack = () => {
   if (detailIndex.value === -1) {
-    router.go(-1)
+    router.go(-1);
   } else {
-    const scrollToElement = detailIndex.value.toString()
-    detailIndex.value = -1
-    nextTick(() => document.getElementById(scrollToElement)?.scrollIntoView())
+    const scrollToElement = detailIndex.value.toString();
+    detailIndex.value = -1;
+    nextTick(() => document.getElementById(scrollToElement)?.scrollIntoView());
   }
-}
+};
 
 const handleDetailForward = () => {
-  detailIndex.value = Math.min(detailIndex.value + 1, detailMaxIndex.value)
-}
+  if (album.value) {
+    detailIndex.value = Math.min(detailIndex.value + 1, detailMaxIndex.value);
+  }
+};
 
 const handleDetailBackward = () => {
-  detailIndex.value = Math.max(detailIndex.value - 1, 0)
-}
+  if (album.value) {
+    detailIndex.value = Math.max(detailIndex.value - 1, 0);
+  }
+};
 </script>
+
+
 
 <style scoped>
 .album-title {

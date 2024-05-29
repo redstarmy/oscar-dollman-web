@@ -11,7 +11,7 @@ export enum validCountryNames {
   Paris = "Paris",
   Berlin = "Berlin",
   UK = "UK",
-  BlackAndWhite = "Black_&_White",
+  BlackAndWhite = "Black & White",
   Holland = "Holland",
 }
 

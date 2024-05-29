@@ -38,7 +38,7 @@ export function getGallery(): country[] {
     const images = getImages(countryName);
     return {
       name: countryName,
-      title: countryName.toString().replace(/_/g, " "),
+      title: validCountryNames[countryName as keyof typeof validCountryNames],
       thumbnail: images.at(0),
       images,
     } as country;

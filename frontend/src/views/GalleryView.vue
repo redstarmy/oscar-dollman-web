@@ -1,5 +1,6 @@
 <!-- GalleryComponent.vue -->
 <template>
+  <div v-if="errorMessage">{{ errorMessage }}</div>
   <div class="thumbnail-container">
     <div v-if="isLoading" class="loading">Loading gallery...</div>
     <div v-else v-for="country in gallery" :key="country.name" class="thumbnail-content">
@@ -31,16 +32,30 @@ const isLoading = ref(true)
 const errorMessage = ref('')
 
 const fetchGallery = async () => {
+  isLoading.value = true; // Ensure loading is true at the start of the fetch operation
   try {
-    const response = await fetch(API_ENDPOINT + 'get-gallery')
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
+    // Attempt to retrieve cached data first
+    const cachedGallery = sessionStorage.getItem('gallery');
+    if (cachedGallery) {
+      gallery.value = JSON.parse(cachedGallery);
+      isLoading.value = false; // Set loading false here if cache is used
+    } else {
+      const response = await fetch(API_ENDPOINT + 'get-gallery');
+      if (!response.ok) {
+        throw new Error(`Network response was not ok, status: ${response.status}`);
+      }
+      gallery.value = await response.json();
+      sessionStorage.setItem('gallery', JSON.stringify(gallery.value)); // Cache the fetched gallery
+      isLoading.value = false; // Set loading false here after successful fetch
     }
-    gallery.value = await response.json()
   } catch (error) {
-    errorMessage.value = 'Error fetching image URLs: ' + error
-  } finally {
-    isLoading.value = false
+    isLoading.value = false; // Ensure loading is set to false when an error occurs
+    if (error instanceof Error) {
+      errorMessage.value = 'Error fetching image URLs: ' + error.message;
+    } else {
+      // If the error is not an instance of Error, it might be a string or another type
+      errorMessage.value = 'An unexpected error occurred';
+    }
   }
 }
 
