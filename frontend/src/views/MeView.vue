@@ -25,6 +25,10 @@
       </p>
     </div>
   </div>
+
+  <footer class="footer">
+    © Oscar Dollman 2024. All rights reserved.
+  </footer>
 </template>
 
 <script lang="ts" setup>
@@ -69,6 +73,16 @@ onMounted(fetchProfile)
 .img-frame {
   width: 80%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
 }
 
 .text {
