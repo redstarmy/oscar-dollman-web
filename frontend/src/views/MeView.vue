@@ -27,7 +27,7 @@
   </div>
 
   <footer class="footer">
-    © Oscar Dollman 2024. All rights reserved.
+    © Oscar Dollman 2026. All rights reserved.
   </footer>
 </template>
 

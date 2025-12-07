@@ -46,14 +46,17 @@ const getSizeForWindowWidth = (windowWidth: number): 'small' | 'medium' | 'large
 }
 
 const getSrcImg = (img: image, size: 'small' | 'medium' | 'large') => {
-  switch (size) {
-    case 'small':
-      return `${API_ENDPOINT}${img.smallUrl}`
-    case 'medium':
-      return `${API_ENDPOINT}${img.mediumUrl}`
-    default:
-      return `${API_ENDPOINT}${img.url}`
-  }
+
+  return `${API_ENDPOINT}${img.url}`
+// Removed to only use full size images
+//  switch (size) {
+//    case 'small':
+//      return `${API_ENDPOINT}${img.smallUrl}`
+//    case 'medium':
+//      return `${API_ENDPOINT}${img.mediumUrl}`
+//    default:
+//      return `${API_ENDPOINT}${img.url}`
+//  }
 }
 
 const loadInitialImage = () => {
