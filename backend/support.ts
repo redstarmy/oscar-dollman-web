@@ -7,10 +7,16 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 const imagePath = path.join(__dirname, "../images");
 
+function getDimensionsFromRelativePath(relativePath: string): ISizeCalculationResult {
+  const absolutePath = path.join(__dirname, "../", relativePath);
+  const fileBuffer = fs.readFileSync(absolutePath);
+  return imageSize(fileBuffer);
+}
+
 export function getProfileImg(): image {
   try {
     const profilePath = path.join("images", "Profile", "profile.jpeg");
-    const dimensions = imageSize(path.join(__dirname, "../", profilePath));
+    const dimensions = getDimensionsFromRelativePath(profilePath); // ⬅ changed
     return {
       url: profilePath,
       mediumUrl: profilePath,
@@ -28,7 +34,7 @@ export function getProfileImg(): image {
 export function getHomeImg(): image {
   try {
     const homePath = path.join("images", "Home", "home.jpeg");
-    const dimensions = imageSize(path.join(__dirname, "../", homePath));
+    const dimensions = getDimensionsFromRelativePath(homePath); // ⬅ changed
     return {
       url: homePath,
       mediumUrl: homePath,
@@ -50,7 +56,7 @@ export function getGallery(): country[] {
       return {
         name: countryName,
         title: validCountryNames[countryName as keyof typeof validCountryNames],
-        thumbnail: images.at(0),
+        thumbnail: images[0],
         images,
       } as country;
     });
@@ -95,7 +101,10 @@ function getImages(countryName: validCountryNames): image[] {
           countryName.toString(),
           `medium-${img}`,
         );
-        const dimensions = imageSize(path.join(__dirname, "../", url));
+
+        // ⬇ changed: use helper instead of imageSize(path.join(...))
+        const dimensions = getDimensionsFromRelativePath(url);
+
         resizeImage(countryName.toString(), img, dimensions);
         return {
           url,
@@ -111,6 +120,7 @@ function getImages(countryName: validCountryNames): image[] {
     throw error;
   }
 }
+
 
 function resizeImage(
   countryName: string,
