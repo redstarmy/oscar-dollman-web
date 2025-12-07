@@ -15,18 +15,18 @@
   },
   "author": "",
   "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.14.8",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.10.1",
     "install": "^0.13.0",
-    "nodemon": "^3.1.4",
+    "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "image-size": "^1.1.1",
-    "sharp": "^0.33.4"
+    "express": "^5.2.1",
+    "image-size": "^2.0.2",
+    "sharp": "^0.34.5"
   }
 }

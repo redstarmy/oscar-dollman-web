@@ -102,7 +102,7 @@ function createServer() {
   app.post("/api/track-source", trackSource);
 
   // Catch-all route
-  app.get("*", (_req, res) => {
+  app.use((_req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "index.html"));
   });
 
