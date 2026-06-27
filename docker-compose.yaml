@@ -1,12 +1,10 @@
 services:
   app:
     container_name: geeek-server
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     ports:
       - 3000:3000
     volumes:
-      - ./images/:/app/images
-
-volumes:
-  geeek-volume:
-    external: true
+      - ./images/:/app/images:ro

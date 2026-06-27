@@ -25,10 +25,6 @@ const props = defineProps({
     type: Object as PropType<image>,
     required: true
   },
-  windowWidth: {
-    type: Number,
-    required: true
-  },
   optStyle: {
     type: String,
     default: ''
@@ -39,29 +35,12 @@ const imageLoaded = ref(false)
 const lazyImage = ref<HTMLImageElement | null>(null)
 const imageSrc = ref('')
 
-const getSizeForWindowWidth = (windowWidth: number): 'small' | 'medium' | 'large' => {
-  if (windowWidth < 768) return 'small'
-  if (windowWidth < 1200) return 'medium'
-  return 'large'
-}
-
-const getSrcImg = (img: image, size: 'small' | 'medium' | 'large') => {
-
+const getSrcImg = (img: image) => {
   return `${API_ENDPOINT}${img.url}`
-// Removed to only use full size images
-//  switch (size) {
-//    case 'small':
-//      return `${API_ENDPOINT}${img.smallUrl}`
-//    case 'medium':
-//      return `${API_ENDPOINT}${img.mediumUrl}`
-//    default:
-//      return `${API_ENDPOINT}${img.url}`
-//  }
 }
 
 const loadInitialImage = () => {
-  const size = getSizeForWindowWidth(props.windowWidth)
-  imageSrc.value = getSrcImg(props.srcImage, size)
+  imageSrc.value = getSrcImg(props.srcImage)
 }
 
 const onImageLoad = () => {

@@ -1,13 +1,7 @@
 <template>
   <div class="description">
     <div class="img-frame">
-      <UseWindowSize v-slot="{ width }">
-        <LazyPlaceholderImage
-          :srcImage="profile"
-          :windowWidth="width"
-          optStyle="max-width: 100%; height: auto;"
-        />
-      </UseWindowSize>
+      <LazyPlaceholderImage :srcImage="profile" optStyle="max-width: 100%; height: auto;" />
     </div>
 
     <div class="info">
@@ -26,21 +20,16 @@
     </div>
   </div>
 
-  <footer class="footer">
-    © Oscar Dollman 2026. All rights reserved.
-  </footer>
+  <footer class="footer">© Oscar Dollman 2026. All rights reserved.</footer>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { API_ENDPOINT, type image } from '../../../shared/api'
-import { UseWindowSize } from '@vueuse/components'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 
 const profile = ref<image>({
   url: '',
-  smallUrl: '',
-  mediumUrl: '',
   width: 5407,
   height: 3862,
   index: 0

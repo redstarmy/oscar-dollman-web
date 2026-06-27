@@ -7,13 +7,10 @@
       <RouterLink :to="'gallery/' + country.name">
         <div class="thumbnail-frame">
           <h2 class="thumbnail-title">{{ country.title }}</h2>
-          <UseWindowSize v-slot="{ width }">
-            <lazy-placeholder-image
-              :srcImage="country.thumbnail"
-              :windowWidth="width"
-              style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15)"
-            />
-          </UseWindowSize>
+          <lazy-placeholder-image
+            :srcImage="country.thumbnail"
+            style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15)"
+          />
         </div>
       </RouterLink>
     </div>
@@ -25,7 +22,6 @@ import { onMounted, ref } from 'vue'
 import type { country } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
-import { UseWindowSize } from '@vueuse/components'
 
 const gallery = ref([] as country[])
 const isLoading = ref(true)

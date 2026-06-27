@@ -15,9 +15,7 @@
           @click="openDetail(image)"
           :id="image.index.toString()"
         >
-          <UseWindowSize v-slot="{ width }">
-            <LazyPlaceholderImage :windowWidth="width" :srcImage="image" />
-          </UseWindowSize>
+          <LazyPlaceholderImage :srcImage="image" />
         </div>
       </div>
     </div>
@@ -43,7 +41,6 @@ import type { image } from '../../../shared/api'
 import { API_ENDPOINT } from '../../../shared/api'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 import { useWindowSize } from '@vueuse/core'
-import { UseWindowSize } from '@vueuse/components'
 
 const props = defineProps({
   countryName: String

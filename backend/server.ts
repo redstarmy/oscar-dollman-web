@@ -1,14 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import {
-  cleanUp,
-  getGallery,
-  getHomeImg,
-  getProfileImg,
-  loadSourceCounts,
-  saveSourceCounts,
-} from "./support";
+import { getGallery, getHomeImg, getProfileImg } from "./support";
 import { country, image } from "../shared/api";
 
 function createServer() {
@@ -19,14 +12,16 @@ function createServer() {
   app.use(cors());
   app.use(express.static(path.join(__dirname, "../frontend")));
   app.use("/api/images", express.static(path.join(__dirname, "../images")));
-  app.use(express.json()); // Parse JSON bodies
 
   // Data fetching
   let gallery: country[], profile: image, home: image;
   try {
     gallery = getGallery();
     console.log("Gallery loaded successfully");
-    console.log("Albums loaded:", gallery.map(album => album.name).join(", "));
+    console.log(
+      "Albums loaded:",
+      gallery.map((album) => album.name).join(", "),
+    );
   } catch (error) {
     console.error("Error loading gallery:", error);
   }
@@ -44,8 +39,6 @@ function createServer() {
   } catch (error) {
     console.error("Error loading home banner:", error);
   }
-
-  let sourceCounts: { [key: string]: number } = loadSourceCounts();
 
   // Route Handlers
   const getProfile = (_req: express.Request, res: express.Response) => {
@@ -83,23 +76,11 @@ function createServer() {
     }
   };
 
-  const trackSource = (req: express.Request, res: express.Response) => {
-    const { source } = req.body;
-    if (source) {
-      sourceCounts[source] = (sourceCounts[source] || 0) + 1;
-      saveSourceCounts(sourceCounts);
-      res.status(200).json({ message: "Source tracked successfully" });
-    } else {
-      res.status(400).json({ message: "Missing source parameter" });
-    }
-  };
-
   // Routes
   app.get("/api/get-profile", getProfile);
   app.get("/api/get-home", getHome);
   app.get("/api/get-gallery", getGalleryData);
   app.get("/api/get-album/:country", getAlbum);
-  app.post("/api/track-source", trackSource);
 
   // Catch-all route
   app.use((_req, res) => {
@@ -112,15 +93,5 @@ function createServer() {
 
   return app;
 }
-
-function handleCleanUp() {
-  console.log("\nCleaning up...");
-  cleanUp();
-  process.exit(0);
-}
-
-process.on("SIGINT", handleCleanUp);
-process.on("SIGTERM", handleCleanUp);
-process.on("SIGQUIT", handleCleanUp);
 
 createServer();

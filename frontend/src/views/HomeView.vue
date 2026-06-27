@@ -121,8 +121,6 @@ import { API_ENDPOINT, type image } from '../../../shared/api'
 
 const bannerImage = ref<image>({
   url: '',
-  smallUrl: '',
-  mediumUrl: '',
   width: 5407,
   height: 3862,
   index: 0
