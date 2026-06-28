@@ -3,9 +3,12 @@
   <figure :style="{ aspectRatio: getAspectRatio(srcImage) }" class="figure-frame">
     <img
       :src="imageSrc"
+      :srcset="imageSrcSet || undefined"
+      :sizes="sizes"
       alt="placeholder"
       :style="optStyle"
       ref="lazyImage"
+      decoding="async"
       @load="onImageLoad"
       :class="{ loading: !imageLoaded }"
     />
@@ -28,19 +31,37 @@ const props = defineProps({
   optStyle: {
     type: String,
     default: ''
+  },
+  sizes: {
+    type: String,
+    default: '100vw'
   }
 })
 
 const imageLoaded = ref(false)
 const lazyImage = ref<HTMLImageElement | null>(null)
 const imageSrc = ref('')
+const imageSrcSet = ref('')
 
 const getSrcImg = (img: image) => {
   return `${API_ENDPOINT}${img.url}`
 }
 
+const getTransformedSrcImg = (img: image, width: number) => {
+  const originalUrl = new URL(getSrcImg(img))
+  return `${originalUrl.origin}/cdn-cgi/image/width=${width},quality=80,format=auto,onerror=redirect${originalUrl.pathname}`
+}
+
 const loadInitialImage = () => {
-  imageSrc.value = getSrcImg(props.srcImage)
+  if (import.meta.env.PROD) {
+    imageSrc.value = getTransformedSrcImg(props.srcImage, 960)
+    imageSrcSet.value = [480, 960, 1600]
+      .map((width) => `${getTransformedSrcImg(props.srcImage, width)} ${width}w`)
+      .join(', ')
+  } else {
+    imageSrc.value = getSrcImg(props.srcImage)
+    imageSrcSet.value = ''
+  }
 }
 
 const onImageLoad = () => {

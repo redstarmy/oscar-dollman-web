@@ -9,6 +9,7 @@
           <h2 class="thumbnail-title">{{ country.title }}</h2>
           <lazy-placeholder-image
             :srcImage="country.thumbnail"
+            sizes="(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 94vw"
             style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15)"
           />
         </div>

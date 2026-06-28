@@ -15,7 +15,10 @@
           @click="openDetail(image)"
           :id="image.index.toString()"
         >
-          <LazyPlaceholderImage :srcImage="image" />
+          <LazyPlaceholderImage
+            :srcImage="image"
+            sizes="(min-width: 1200px) 400px, (min-width: 768px) 50vw, 94vw"
+          />
         </div>
       </div>
     </div>
