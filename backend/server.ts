@@ -11,7 +11,13 @@ function createServer() {
   // Middleware
   app.use(cors());
   app.use(express.static(path.join(__dirname, "../frontend")));
-  app.use("/api/images", express.static(path.join(__dirname, "../images")));
+  app.use(
+    "/api/images",
+    express.static(path.join(__dirname, "../images"), {
+      immutable: true,
+      maxAge: "30d",
+    }),
+  );
 
   // Data fetching
   let gallery: country[], profile: image, home: image;
