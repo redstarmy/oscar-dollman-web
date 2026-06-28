@@ -48,22 +48,6 @@ export function getProfileImg(): image {
   }
 }
 
-export function getHomeImg(): image {
-  try {
-    const homePath = path.join("images", "Home", "home.jpeg");
-    const dimensions = getDimensionsFromRelativePath(homePath);
-    return {
-      url: homePath,
-      height: dimensions.height,
-      width: dimensions.width,
-      index: 0,
-    } as image;
-  } catch (error) {
-    console.error("Error loading home image:", error);
-    throw error;
-  }
-}
-
 export function getGallery(): country[] {
   try {
     const countries = validCountryDirectories().map((countryName) => {

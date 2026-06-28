@@ -116,26 +116,13 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { onMounted, ref } from 'vue'
-import { API_ENDPOINT, type image } from '../../../shared/api'
+import type { image } from '../../../shared/api'
 import LazyPlaceholderImage from '@/components/LazyPlaceholderImage.vue'
 
-const bannerImage = ref<image>({
-  url: '',
-  width: 5407,
-  height: 3862,
+const bannerImage: image = {
+  url: 'images/Home/home.jpeg',
+  width: 2048,
+  height: 882,
   index: 0
-})
-
-const fetchBanner = async () => {
-  try {
-    const response = await fetch(API_ENDPOINT + 'get-home')
-    if (!response.ok) throw new Error('Network response was not ok')
-
-    bannerImage.value = await response.json()
-  } catch (error) {
-    console.error('Error fetching profile image:', error)
-  }
 }
-onMounted(fetchBanner)
 </script>

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { getGallery, getHomeImg, getProfileImg } from "./support";
+import { getGallery, getProfileImg } from "./support";
 import { country, image } from "../shared/api";
 
 function createServer() {
@@ -20,7 +20,7 @@ function createServer() {
   );
 
   // Data fetching
-  let gallery: country[], profile: image, home: image;
+  let gallery: country[], profile: image;
   try {
     gallery = getGallery();
     console.log("Gallery loaded successfully");
@@ -39,27 +39,12 @@ function createServer() {
     console.error("Error loading profile picture:", error);
   }
 
-  try {
-    home = getHomeImg();
-    console.log("Home banner loaded successfully");
-  } catch (error) {
-    console.error("Error loading home banner:", error);
-  }
-
   // Route Handlers
   const getProfile = (_req: express.Request, res: express.Response) => {
     if (profile) {
       res.json(profile);
     } else {
       res.status(500).json({ message: "Error loading profile picture" });
-    }
-  };
-
-  const getHome = (_req: express.Request, res: express.Response) => {
-    if (home) {
-      res.json(home);
-    } else {
-      res.status(500).json({ message: "Error loading home banner" });
     }
   };
 
@@ -84,7 +69,6 @@ function createServer() {
 
   // Routes
   app.get("/api/get-profile", getProfile);
-  app.get("/api/get-home", getHome);
   app.get("/api/get-gallery", getGalleryData);
   app.get("/api/get-album/:country", getAlbum);
 
